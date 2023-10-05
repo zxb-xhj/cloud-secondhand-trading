@@ -1,7 +1,9 @@
 # cloud-secondhand-trading
 二手交易平台
 此系统具有两个操作用户角色，即用户和系统管理员。用户根据自己的情况通过系统购买商品或者发布自己需要出售的商品及其信息；系统管理员在后台对系统进行用户管理，对资料进行统计分析并开展系统的正常运行维护工作。
+
 首页  --必须登录才能对商品进行发布和购买
+![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/26654026-d66e-47c7-b350-f4828e5edc56)
 ![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/3d2eb216-f6b6-4bb3-b383-1aebc80c0bf9)
 商品展示  
 ![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/ef8e6072-c869-47c8-afe5-4c8ba91926d0)
