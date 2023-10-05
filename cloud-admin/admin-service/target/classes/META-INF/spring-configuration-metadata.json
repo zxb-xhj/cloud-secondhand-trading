@@ -1,0 +1,18 @@
+{
+  "groups": [
+    {
+      "name": "admin",
+      "type": "com.lyx.admin.ser.config.ServiceConfig",
+      "sourceType": "com.lyx.admin.ser.config.ServiceConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "admin.services",
+      "type": "java.util.List<java.lang.String>",
+      "description": "服务列表",
+      "sourceType": "com.lyx.admin.ser.config.ServiceConfig"
+    }
+  ],
+  "hints": []
+}

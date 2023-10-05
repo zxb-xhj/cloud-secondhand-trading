@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="common-mybatis-plus" />
+        <module name="demo-storage" />
+        <module name="cloud-goods" />
+        <module name="admin-api" />
+        <module name="cloud-payment" />
+        <module name="common-redis" />
+        <module name="cloud-auth" />
+        <module name="common-base" />
+        <module name="cloud-gateway" />
+        <module name="cloud-member" />
+        <module name="cloud-oss" />
+        <module name="common-excel" />
+        <module name="cloud-storage" />
+        <module name="cloud-search" />
+        <module name="common-web" />
+        <module name="cloud-order" />
+        <module name="demo-account" />
+        <module name="demo-order" />
+        <module name="cloud-message" />
+        <module name="admin-service" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="admin-api" options="-parameters" />
+      <module name="admin-service" options="-parameters" />
+      <module name="cloud-auth" options="-parameters" />
+      <module name="cloud-gateway" options="-parameters" />
+      <module name="cloud-goods" options="-parameters" />
+      <module name="cloud-member" options="-parameters" />
+      <module name="cloud-message" options="-parameters" />
+      <module name="cloud-order" options="-parameters" />
+      <module name="cloud-oss" options="-parameters" />
+      <module name="cloud-payment" options="-parameters" />
+      <module name="cloud-search" options="-parameters" />
+      <module name="cloud-storage" options="-parameters" />
+      <module name="common-base" options="-parameters" />
+      <module name="common-excel" options="-parameters" />
+      <module name="common-mybatis-plus" options="-parameters" />
+      <module name="common-redis" options="-parameters" />
+      <module name="common-web" options="-parameters" />
+      <module name="demo-account" options="-parameters" />
+      <module name="demo-order" options="-parameters" />
+      <module name="demo-storage" options="-parameters" />
+    </option>
+  </component>
+</project>
