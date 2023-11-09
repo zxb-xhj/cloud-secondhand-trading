@@ -55,7 +55,7 @@ public interface OrderService extends IService<Order> {
      * 查询订单、地址、发布数量
      * @return
      */
-    OrderReleaseAddrsCountVo getCount(Long memberId);
+    OrderReleaseAddrsCountVo getCount(Long memberId) throws Exception;
 
     PageUtils<OrderListVo> getAdminOrderPageList(OrderListPageReq req);
 

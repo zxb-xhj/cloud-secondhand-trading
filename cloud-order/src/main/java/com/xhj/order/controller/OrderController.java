@@ -57,8 +57,17 @@ public class OrderController {
      * 查询订单、地址、发布数量
      */
     @GetMapping("/count/{memberId}")
-    public R count(@PathVariable Long memberId){
-        OrderReleaseAddrsCountVo countVo = orderService.getCount(memberId);
+    public R count(@PathVariable Long memberId) {
+        long millis = System.currentTimeMillis();
+        OrderReleaseAddrsCountVo countVo = null;
+        try {
+            countVo = orderService.getCount(memberId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return R.failed();
+        }
+        long end = System.currentTimeMillis();
+        System.out.println(end-millis);
         return R.ok(countVo);
     }
 

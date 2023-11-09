@@ -338,22 +338,39 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper,Order> implements 
     }
 
     @Override
-    public OrderReleaseAddrsCountVo getCount(Long memberId) {
-        OrderReleaseAddrsCountVo countVo = new OrderReleaseAddrsCountVo();
-        // 查询用户订单数量
-        LambdaQueryWrapper<Order> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(StringUtils.isNotEmpty(memberId.toString()),Order::getMemberId,memberId);
-        int orderCount = count(wrapper);
-        // 查询用户地址数量
-        R count1 = memberFeignService.count(memberId);
-        int orderAddrCount = Integer.parseInt(count1.getData().toString());
-        // 查询用户发布商品数量 远程调用
-        R count = goodsFeignService.count(memberId);
-        int goodsCount = Integer.parseInt(count.getData().toString());
-        countVo.setOrderCount(orderCount);
-        countVo.setAddrsCount(orderAddrCount);
-        countVo.setReleaseCount(goodsCount);
-        return countVo;
+    public OrderReleaseAddrsCountVo getCount(Long memberId) throws Exception {
+        CompletableFuture<OrderReleaseAddrsCountVo> supplyAsync = CompletableFuture.supplyAsync(() -> {
+            return new OrderReleaseAddrsCountVo();
+        },executor);
+        CompletableFuture<Integer> supplyAsync1 = CompletableFuture.supplyAsync(() -> {
+            // 查询用户订单数量
+            LambdaQueryWrapper<Order> wrapper = Wrappers.lambdaQuery();
+            wrapper.eq(StringUtils.isNotEmpty(memberId.toString()), Order::getMemberId, memberId);
+            int orderCount = count(wrapper);
+            return orderCount;
+        },executor);
+        CompletableFuture<Integer> supplyAsync2 = CompletableFuture.supplyAsync(() -> {
+            // 查询用户地址数量
+            R count1 = memberFeignService.count(memberId);
+            return Integer.parseInt(count1.getData().toString());
+        },executor);
+        CompletableFuture<Integer> supplyAsync3 = CompletableFuture.supplyAsync(() -> {
+            // 查询用户发布商品数量 远程调用
+            R count = goodsFeignService.count(memberId);
+            return Integer.parseInt(count.getData().toString());
+        },executor);
+        CompletableFuture<OrderReleaseAddrsCountVo> applyAsync = supplyAsync.thenApplyAsync((countVo) -> {
+            try {
+                countVo.setOrderCount(supplyAsync1.get());
+                countVo.setAddrsCount(supplyAsync2.get());
+                countVo.setReleaseCount(supplyAsync3.get());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return countVo;
+        },executor);
+        CompletableFuture.allOf(applyAsync,supplyAsync,supplyAsync1,supplyAsync2,supplyAsync3).get();
+        return applyAsync.get();
     }
 
     /**
