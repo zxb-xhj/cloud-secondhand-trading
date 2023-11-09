@@ -531,19 +531,39 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
      * @return
      */
     @Override
-    public GoodsVO getViewCount(Long id) {
-        GoodsVO vo = new GoodsVO();
-        // 浏览量+1
-        baseMapper.updateViewCount(id);
-        Integer residueGoods = storageFeignService.residueGoodsId(id);
-        Integer residue = storageFeignService.residue(id);
-        if (residue != null) {
-            vo.setTotal(residue);
-        } else {
-            vo.setTotal(residueGoods == null ? 0 : residueGoods);
-        }
-        Integer count = baseMapper.getViewCount(id);
-        vo.setViewCount(count);
-        return vo;
+    public GoodsVO getViewCount(Long id) throws Exception {
+        CompletableFuture<GoodsVO> supplyAsync2 = CompletableFuture.supplyAsync(() -> {
+            // 浏览量+1
+            baseMapper.updateViewCount(id);
+            GoodsVO vo = new GoodsVO();
+            return vo;
+        }, executor);
+        CompletableFuture<Integer> supplyAsync = CompletableFuture.supplyAsync(() -> {
+            return storageFeignService.residueGoodsId(id);
+        },executor);
+        CompletableFuture<Integer> supplyAsync1 = CompletableFuture.supplyAsync(() -> {
+            return storageFeignService.residue(id);
+        },executor);
+        CompletableFuture<Void> runAsync1 = CompletableFuture.runAsync(() -> {
+            try {
+                if (supplyAsync.get() != null) {
+                    supplyAsync2.get().setTotal(supplyAsync.get());
+                } else {
+                    supplyAsync2.get().setTotal(supplyAsync1.get() == null ? 0 : supplyAsync1.get());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }, executor);
+        CompletableFuture<Void> runAsync = CompletableFuture.runAsync(() -> {
+            Integer count = baseMapper.getViewCount(id);
+            try {
+                supplyAsync2.get().setViewCount(count);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }, executor);
+        CompletableFuture.allOf(supplyAsync,supplyAsync1,supplyAsync2,runAsync,runAsync1).get();
+        return supplyAsync2.get();
     }
 }

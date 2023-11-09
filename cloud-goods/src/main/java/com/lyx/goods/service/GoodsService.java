@@ -114,5 +114,5 @@ public interface GoodsService extends IService<Goods> {
      * @param id
      * @return
      */
-    GoodsVO getViewCount(Long id);
+    GoodsVO getViewCount(Long id) throws Exception;
 }

@@ -2,12 +2,14 @@ package com.lyx.common.mp.utils;
 
 import lombok.Data;
 import com.baomidou.mybatisplus.extension.plugins.pagination.*;
+
+import java.io.Serializable;
 import java.util.List;
 /**
  * @author： 黎勇炫
  */
 @Data
-public class PageUtils<T> {
+public class PageUtils<T> implements Serializable {
     private Long total = 0L;
     private Long pageNo;
     private Long pageSize;

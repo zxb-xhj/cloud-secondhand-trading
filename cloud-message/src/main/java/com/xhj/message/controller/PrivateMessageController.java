@@ -32,7 +32,6 @@ public class PrivateMessageController {
     @GetMapping("/getMessage/{id}")
     public R getMessage(@PathVariable("id") Integer id){
         PrivateMessageListVO privateMessageListVO = privateMessageService.getMessage(id);
-        System.out.println(privateMessageListVO);
         return R.ok(privateMessageListVO);
     }
 

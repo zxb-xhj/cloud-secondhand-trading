@@ -6,6 +6,7 @@ import com.xhj.message.entity.req.CommentReplyReq;
 import com.xhj.message.entity.vo.CommentReplyVO;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * <p>
@@ -20,7 +21,7 @@ public interface CommentReplyService extends IService<CommentReply> {
      * @param id
      * @return
      */
-    List<CommentReplyVO> getCommentReply(Integer id);
+    List<CommentReplyVO> getCommentReply(Integer id) throws Exception;
 
     /**
      * 发表评论

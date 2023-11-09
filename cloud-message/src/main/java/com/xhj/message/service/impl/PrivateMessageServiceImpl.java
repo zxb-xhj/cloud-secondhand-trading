@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * <p>
@@ -32,6 +34,9 @@ public class PrivateMessageServiceImpl extends ServiceImpl<PrivateMessageMapper,
     @Autowired
     private WebSocketServer webSocketServer;
 
+    @Autowired
+    private ThreadPoolExecutor executor;
+
     /**
      * 获取消息
      * @param id
@@ -39,18 +44,17 @@ public class PrivateMessageServiceImpl extends ServiceImpl<PrivateMessageMapper,
      */
     @Override
     public PrivateMessageListVO getMessage(Integer id) {
-        System.out.println(id);
         // 准备数据
         PrivateMessageListVO privateMessageListVO = new PrivateMessageListVO();
-        List<PrivateMessageVO> privateMessageVOS = new ArrayList<>();
-        // 构建查询条件
         LambdaQueryWrapper<PrivateMessage> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(PrivateMessage::getSenderId,id)
+        wrapper.eq(PrivateMessage::getSenderId, id)
                 .or()
-                .eq(PrivateMessage::getReceiverId,id);
-        Set<String> set = new HashSet<>();
+                .eq(PrivateMessage::getReceiverId, id);
         // 查询用户的所有消息
         List<PrivateMessage> privateMessages = baseMapper.selectList(wrapper);
+        // 构建查询条件
+        List<PrivateMessageVO> privateMessageVOS = new ArrayList<>();
+        Set<String> set = new HashSet<>();
         if (privateMessages.size()>0){
             for (PrivateMessage privateMessage : privateMessages) {
                 PrivateMessageVO vo = new PrivateMessageVO();
@@ -61,6 +65,8 @@ public class PrivateMessageServiceImpl extends ServiceImpl<PrivateMessageMapper,
                 set.add(privateMessage.getReceiverId()+"");
             }
         }
+        // 保存
+        privateMessageListVO.setPrivateMessageVOs(privateMessageVOS);
         // 移除自己
         set.remove(id+"");
         // 转成Long类型
@@ -73,8 +79,6 @@ public class PrivateMessageServiceImpl extends ServiceImpl<PrivateMessageMapper,
             List<Map<String,Object>> map = memberFiegnSerivce.getMessageUserName(list);
             privateMessageListVO.setList(map);
         }
-        // 保存
-        privateMessageListVO.setPrivateMessageVOs(privateMessageVOS);
         return privateMessageListVO;
     }
 

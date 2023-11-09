@@ -34,7 +34,13 @@ public class CommentReplyController {
      */
     @GetMapping("/{id}")
     public R getCommentReply(@PathVariable("id") Integer id){
-        List<CommentReplyVO> commentReplyVOs = commentReplyService.getCommentReply(id);
+        List<CommentReplyVO> commentReplyVOs = null;
+        try {
+            commentReplyVOs = commentReplyService.getCommentReply(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            R.failed();
+        }
         return R.ok(commentReplyVOs);
     }
     /**

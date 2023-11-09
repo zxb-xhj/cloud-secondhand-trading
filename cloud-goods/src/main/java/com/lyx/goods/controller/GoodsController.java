@@ -137,8 +137,14 @@ public class GoodsController {
        * 查询商品库存和浏览量
        */
     @GetMapping("/viewCount/{id}")
-    public R getViewCount(@PathVariable Long id) throws ExecutionException, InterruptedException {
-        GoodsVO byId = goodsService.getViewCount(id);
+    public R getViewCount(@PathVariable Long id) {
+        GoodsVO byId = null;
+        try {
+            byId = goodsService.getViewCount(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return R.failed();
+        }
         return R.ok(byId);
     }
 

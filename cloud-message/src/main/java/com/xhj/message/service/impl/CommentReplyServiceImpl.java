@@ -15,8 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.Collectors;
 
 /**
@@ -31,44 +35,66 @@ public class CommentReplyServiceImpl extends ServiceImpl<CommentReplyMapper, Com
 
     @Autowired
     private MemberFiegnSerivce memberFiegnSerivce;
+
+    @Autowired
+    private ThreadPoolExecutor executor;
     /**
      * 获取评论
      * @param id
      * @return
      */
     @Override
-    public List<CommentReplyVO> getCommentReply(Integer id) {
-        // 构建查询条件
-        LambdaQueryWrapper<CommentReply> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(CommentReply::getGoodsId,id)
-                .orderByAsc(CommentReply::getCreateTime);
-        // 查询该商品评论的用户id
-        List<Long> memberIds = baseMapper.selectMemberId(id);
-        // 根据用户id查询用户名 远程调用
-        List<Map<String, Object>> userName = memberFiegnSerivce.getMessageUserName(memberIds);
-        // 查询该商品的评论
-        List<CommentReply> replyList = list(wrapper);
-        List<CommentReplyVO> commentReplyVOS = replyList.stream().map(replys -> {
-            CommentReplyVO commentReplyVO = new CommentReplyVO();
-            BeanUtils.copyProperties(replys, commentReplyVO);
-            // 查询用户名
-            for (Map<String, Object> map : userName) {
-                Integer o = Integer.parseInt(map.get("id")+"");
-                if(o.equals(commentReplyVO.getMemberId())){
-                    commentReplyVO.setMemberName( map.get("nickname")!=null?map.get("nickname")+"":map.get("username")+"");
-                }
-                // 设置回复用户名
-                if (commentReplyVO.getParentId()!=null) {
-                    CommentReply reply = getById(commentReplyVO.getParentId());
-                    if (o.equals(reply.getMemberId())) {
-                        commentReplyVO.setParentName(map.get("nickname") != null ? map.get("nickname") + "" : map.get("username") + "");
-                        commentReplyVO.setParentContent(reply.getContent());
+    public List<CommentReplyVO> getCommentReply(Integer id) throws Exception {
+        long now = System.currentTimeMillis();
+        CompletableFuture<List<CommentReply>> supplyAsync = CompletableFuture.supplyAsync(() -> {
+            // 构建查询条件
+            LambdaQueryWrapper<CommentReply> wrapper = Wrappers.lambdaQuery();
+            wrapper.eq(CommentReply::getGoodsId, id)
+                    .orderByAsc(CommentReply::getCreateTime);
+            // 查询该商品的评论
+            List<CommentReply> replyList = list(wrapper);
+            return replyList;
+        },executor);
+        CompletableFuture<List<Map<String, Object>>> completableFuture = CompletableFuture.supplyAsync(() -> {
+            // 查询该商品评论的用户id
+            List<Long> memberIds = baseMapper.selectMemberId(id);
+            // 根据用户id查询用户名 远程调用
+            List<Map<String, Object>> messageUserName = memberFiegnSerivce.getMessageUserName(memberIds);
+            return messageUserName;
+        }, executor);
+
+//        CompletableFuture.allOf(supplyAsync,completableFuture).get();
+        CompletableFuture<List<CommentReplyVO>> applyAsync = supplyAsync.thenApplyAsync((data) -> {
+            List<CommentReplyVO> commentReplyVOS = data.stream().map(replys -> {
+                CommentReplyVO commentReplyVO = new CommentReplyVO();
+                BeanUtils.copyProperties(replys, commentReplyVO);
+                // 查询用户名
+                try {
+                    for (Map<String, Object> map : completableFuture.get()) {
+                        Integer o = Integer.parseInt(map.get("id") + "");
+                        if (o.equals(commentReplyVO.getMemberId())) {
+                            commentReplyVO.setMemberName(map.get("nickname") != null ? map.get("nickname") + "" : map.get("username") + "");
+                        }
+                        // 设置回复用户名
+                        if (commentReplyVO.getParentId() != null) {
+                            CommentReply reply = getById(commentReplyVO.getParentId());
+                            if (o.equals(reply.getMemberId())) {
+                                commentReplyVO.setParentName(map.get("nickname") != null ? map.get("nickname") + "" : map.get("username") + "");
+                                commentReplyVO.setParentContent(reply.getContent());
+                            }
+                        }
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            }
-            return commentReplyVO;
-        }).collect(Collectors.toList());
-        return commentReplyVOS;
+                return commentReplyVO;
+            }).collect(Collectors.toList());
+            return commentReplyVOS;
+        }, executor);
+        CompletableFuture.allOf(supplyAsync,completableFuture,applyAsync).get();
+        long end = System.currentTimeMillis();
+        System.out.println(now-end);
+        return applyAsync.get();
     }
 
     /**
@@ -84,7 +110,9 @@ public class CommentReplyServiceImpl extends ServiceImpl<CommentReplyMapper, Com
         CommentReplyVO commentReplyVO = new CommentReplyVO();
         BeanUtils.copyProperties(commentReply,commentReplyVO);
         if (req.getParentId()!=null){
-            String parentName = memberFiegnSerivce.getMemberName(Long.getLong(req.getParentId() + ""));
+            CommentReply reply = getById(req.getParentId());
+            Long id = Long.parseLong(reply.getMemberId().toString());
+            String parentName = memberFiegnSerivce.getMemberName(id);
             commentReplyVO.setParentName(parentName);
         }
         return commentReplyVO;
