@@ -12,6 +12,7 @@ import com.lyx.member.entity.req.MemberListPageReq;
 import com.lyx.member.entity.req.MemberPassReq;
 import com.lyx.member.entity.req.SaveMemberReq;
 import com.lyx.member.entity.vo.AreaVo;
+import com.lyx.member.entity.vo.MemberInfoVO;
 import com.lyx.member.entity.vo.MemberLoginVo;
 import com.lyx.member.entity.vo.MemberVO;
 import com.lyx.member.service.AreaService;
@@ -32,6 +33,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -47,6 +49,16 @@ public class MemberController {
 
     @Resource
     private MemberService memberService;
+
+
+    /**
+     * 根据id查询用户
+     */
+    @PostMapping("/getMessageUserName")
+    public List<Map<String,Object>> getMessageUserName(@RequestBody List<Long> ids){
+        List<Map<String,Object>> map = memberService.getMessageUserName(ids);
+        return map;
+    }
 
     /**
      * 查询用户是否存在
@@ -119,12 +131,22 @@ public class MemberController {
         String mobile = memberService.getMemberMobile(id);
         return mobile;
     }
+    /**
+     * 获取昵称
+     * @param id
+     * @return
+     */
+    @GetMapping("/memberName/{id}")
+    public String getMemberName(@PathVariable Long id){
+        String name = memberService.getMemberName(id);
+        return name;
+    }
      /**
        * 获取会员详情
        */
     @GetMapping("/memberId/{id}")
     public R getMemberById(@NotNull(message = "id can not be null!") @PathVariable Long id){
-        MemberVO vo = memberService.getMemberById(id);
+        MemberInfoVO vo = memberService.getMemberById(id);
         return R.ok(vo);
     }
 

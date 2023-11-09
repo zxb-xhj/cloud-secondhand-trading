@@ -25,6 +25,7 @@
             <a href="javascript:;" v-if="!username" @click="login()">登录</a>
             <a href="javascript:;"  @click="reg()">注册</a>
             <a href="/order" v-if="username">我的订单</a>
+            <a href="/message" v-if="username">我的消息</a>
             <a href="/homepage" v-if="username=='admin'">返回后台</a>
           </div>
         </div>
@@ -86,31 +87,26 @@ beforeUpdate() {
   
 },
   data(){
-  return{
-    // 被激活的链接地址
-    activePath:"",
-    fanhui: false,
-    activeIndex:"",
-    search:{
-      query:""
-    },
-    username:"",
-    nickname:""
-  };
+    return{
+      // 被激活的链接地址
+      activePath:"",
+      fanhui: false,
+      activeIndex:"",
+      search:{
+        query:""
+      },
+      username:"",
+      nickname:""
+    };
   },
   activated() {
   if(sessionStorage.getItem("token")){
     this.username=sessionStorage.getItem('username');
     this.nickname =sessionStorage.getItem('nickname')=="null"?this.$store.getters.getUser:sessionStorage.getItem('nickname')
-    // console.log(this.nickname+""==null)
-    // console.log(this.nickname=="null")
-    console.log("username")
   }else{
     this.username=null
     this.nickname =null
   }
-    console.log(sessionStorage.getItem("token"))
-    // console.log("username")
 
   
   },
@@ -119,12 +115,10 @@ beforeUpdate() {
   },
   methods: {
     saveNavState(val){
-      console.log(val)
       this.activePath=val
     },
     getfanhui(){
       this.fanhui = window.location.pathname!="/index";
-      console.log(this.fanhui)
     },
 
     login(){
@@ -151,7 +145,6 @@ beforeUpdate() {
       this.$router.push({path:"/goods",query:{search:this.search.query}});
       this.$http.get("/api/cloud-goods/goods/es/list?pageNo="+this.pageNo+"&pageSize="+this.pageSize+"&category_id="+this.category_id).
       then(res=>{
-        console.log(res.data.data.list);
         this.product = res.data.data.list;
         this.total=res.data.data.total;
         this.search.query="";

@@ -33,7 +33,7 @@ public interface GoodsService extends IService<Goods> {
      /**
        * 切换商品上架状态
        */
-    void changeIsOnSell(List<Long> goodsIds, Integer isOnSell);
+    void changeIsOnSell(List<Long> goodsIds, Integer isOnSell,Long memberId);
 
      /**
        * 查询商品详情
@@ -108,4 +108,11 @@ public interface GoodsService extends IService<Goods> {
     List<Long> getGoodsById(Long memberId);
 
     List<GoodsVO> listIds(List<Long> ids);
+
+    /**
+     * 查询商品库存阿浏览量
+     * @param id
+     * @return
+     */
+    GoodsVO getViewCount(Long id);
 }

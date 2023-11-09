@@ -21,6 +21,7 @@ import java.util.Collections;
 @SpringBootApplication
 @EnableTransactionManagement
 @EnableFeignClients("com.lyx.goods.feign")
+@EnableCaching
 public class GoodsApp {
     public static void main(String[] args) {
         SpringApplication.run(GoodsApp.class,args);

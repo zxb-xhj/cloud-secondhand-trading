@@ -17,9 +17,18 @@ import ReleaseMember from "@/views/frontdesk/userinfo/ReleaseMember"
 import Detail from "@/views/frontdesk/detail";
 import NowConfirmcart from "@/views/frontdesk/nowConfirmcart";
 import UserInfo from "@/views/frontdesk/userinfo/userInfo"
+import Message from "../components/message"
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path: "/message",
+    name: 'Message',
+    component: Message,
+    meta: {
+      keepAlive: false, //此组件不需要被缓存
+    }
+  },
   {
     path: "/nowConfirmcart/:id",
     component: NowConfirmcart
@@ -178,7 +187,8 @@ const routes = [
       {
         path: "/ReleaseMember",
         component: ReleaseMember
-      }
+      },
+
     ]
   },
 
@@ -190,12 +200,16 @@ const router = new VueRouter({
   routes
 })
 //挂载路由导航守卫
-// router.beforeEach((to,from,next)=>{
-//   if(to.path==="/login") return next()
-//   //获取token
-//   const tokenStr=window.sessionStorage.getItem("token")
-//   if(!tokenStr) return  next("/login")
-//   next()
-// })
+router.beforeEach((to,from,next)=>{
+  if(to.path==="/login") return next()
+  if(to.path==="/index") return next()
+  if(to.path==="/register") return next()
+  if(to.path==="/detail/") return next()
+  if(to.path==="/goods") return next()
+  //获取token
+  const tokenStr=window.sessionStorage.getItem("token")
+  if(!tokenStr) return  next("/login")
+  next()
+})
 
 export default router

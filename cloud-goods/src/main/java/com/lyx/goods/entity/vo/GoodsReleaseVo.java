@@ -6,6 +6,7 @@ import com.lyx.goods.entity.GoodsDetails;
 import com.lyx.goods.entity.GoodsImages;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.List;
  * @Description:
  */
 @Data
-public class GoodsReleaseVo {
+public class GoodsReleaseVo implements Serializable {
     /**
      * 编号
      */

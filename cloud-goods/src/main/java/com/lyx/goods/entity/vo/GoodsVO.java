@@ -10,6 +10,7 @@ import com.lyx.goods.entity.GoodsDetails;
 import com.lyx.goods.entity.GoodsImages;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
  * @date 2023年04月05日 14:37
  */
 @Data
-public class GoodsVO {
+public class GoodsVO implements Serializable {
 
 
      /**

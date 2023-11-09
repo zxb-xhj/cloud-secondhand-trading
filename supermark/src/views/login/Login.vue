@@ -33,6 +33,8 @@
 <script>
 import {mapActions}from "vuex";
 import jsonp from "jsonp";
+
+import EventBus from '../../components/event-bus'
 export default {
 name: "Login",
   data() {
@@ -106,6 +108,7 @@ name: "Login",
                    title:"登录成功",
                    message:`欢迎回来~ 亲爱的${res.data.data.member.nickname==undefined?res.data.data.member.username:res.data.data.member.nickname}`
                  });
+                EventBus.$emit("login",res.data.data.id)
                 //把登陆信息存储到本地
                 sessionStorage.setItem("user",JSON.stringify(res.data.data.member));
                 sessionStorage.setItem("token",JSON.stringify(res.data.data.token));

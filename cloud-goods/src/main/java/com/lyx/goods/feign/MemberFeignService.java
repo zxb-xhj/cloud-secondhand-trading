@@ -22,4 +22,11 @@ public interface MemberFeignService {
     @GetMapping("/member/memberMobile/{id}")
     String getMemberMobile(@NotNull(message = "id can not be null!") @PathVariable Long id);
 
+    /**
+     * 获取昵称
+     * @param id
+     * @return
+     */
+    @GetMapping("/member/memberName/{id}")
+    String getMemberName(@PathVariable Long id);
 }

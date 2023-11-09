@@ -24,6 +24,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -115,7 +117,8 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
      */
     @Transactional
     @Override
-    public void changeIsOnSell(List<Long> goodsIds, Integer isOnSell) {
+    @CacheEvict(value = "cloud-goods:releaseGoods",key = "#memberId")
+    public void changeIsOnSell(List<Long> goodsIds, Integer isOnSell,Long memberId) {
         LambdaUpdateWrapper<Goods> updateWrapper = Wrappers.lambdaUpdate();
         // 上架操作
         if (isOnSell == 1){
@@ -159,6 +162,8 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
      * @param id
      */
     @Override
+//    @Cacheable(value = {"areaVo"},key = "'AreaVo'", sync = true)
+    @Cacheable(value = "cloud-goods:goods", key = "#id")
     public GoodsVO getGoodsVOById(Long id) throws ExecutionException, InterruptedException {
         // 查询VO
         GoodsVO vo = new GoodsVO();
@@ -169,6 +174,16 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         CompletableFuture<Void> runAsync5 = supplyAsync.thenRunAsync(() -> {
             try {
                 if (supplyAsync.get() != null) {
+                    // 获取卖家的昵称
+                    CompletableFuture<Void> async = supplyAsync.runAsync(() -> {
+                        try {
+                            Long sellerId = supplyAsync.get().getSellerId();
+                            String name = memberFeignService.getMemberName(sellerId);
+                            vo.setSeller(name);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
 
                     // 递归查找父分类
                     CompletableFuture<Void> runAsync = supplyAsync.thenAcceptAsync((goodsVO) -> {
@@ -180,7 +195,6 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
                             e.printStackTrace();
                         }
                         // 浏览量加一
-                        baseMapper.updateViewCount(goodsVO.getId());
                         vo.setCategoryPath(categoryService.findParentCategory(goodsVO.getCid()));
                     }, executor);
                     // 设置商品图片
@@ -195,13 +209,13 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
                     }, executor);
                     // 远程调用查询库存
                     CompletableFuture<Void> runAsync3 = CompletableFuture.runAsync(() -> {
-                        Integer residueGoods = storageFeignService.residueGoodsId(id);
-                        Integer residue = storageFeignService.residue(id);
-                        if (residue != null) {
-                            vo.setTotal(residue);
-                        } else {
-                            vo.setTotal(residueGoods == null ? 0 : residueGoods);
-                        }
+//                        Integer residueGoods = storageFeignService.residueGoodsId(id);
+//                        Integer residue = storageFeignService.residue(id);
+//                        if (residue != null) {
+//                            vo.setTotal(residue);
+//                        } else {
+//                            vo.setTotal(residueGoods == null ? 0 : residueGoods);
+//                        }
                     }, executor);
                     // 设置手机号码
                     CompletableFuture<Void> runAsync4 = CompletableFuture.runAsync(() -> {
@@ -209,7 +223,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
                         String mobile = memberFeignService.getMemberMobile(Long.parseLong(goods.getSellerId() + ""));
                         vo.setMobile(mobile);
                     }, executor);
-                    CompletableFuture.allOf(runAsync, runAsync1, runAsync2, runAsync3, runAsync4).get();
+                    CompletableFuture.allOf(runAsync, runAsync1, runAsync2, runAsync3, runAsync4,async).get();
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -258,6 +272,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
      * @param req
      */
     @Override
+    @CacheEvict(value = "cloud-goods:goods", key = "#req.id")
     @Transactional(rollbackFor = Exception.class)
     public void updateGoodsInfo(GoodsSaveReq req) {
         // 先拿到商品图片集合,拿到所有没id的对象进行入库操作。
@@ -299,6 +314,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
      */
     @Transactional
     @Override
+    @CacheEvict(value = "cloud-goods:releaseGoods",key = "#req.seller_id")
     public void saveGoodsInfo(GoodsSaveTestReq req) {
         Goods goods = new Goods();
         BeanUtils.copyProperties(req,goods);
@@ -349,6 +365,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
      * @return
      */
     @Override
+    @Cacheable(value = "cloud-goods:releaseGoods",key = "#req.seller_id")
     public PageUtils<GoodsReleaseVo> releaseGoodslistPage(GoodsListPageReq req) {
         Page<GoodsReleaseVo> page = new Page<>(req.getPageNo(),req.getPageSize());
         Page<Goods> pageGoods = new Page<>(req.getPageNo(),req.getPageSize());
@@ -413,6 +430,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
      */
     @Transactional
     @Override
+    @CacheEvict(value = "cloud-goods:releaseGoods",key = "#req.seller_id")
     public void removeGoodsByIds(List<Long> ids) {
         this.removeByIds(ids);
         // 下架es商品
@@ -479,6 +497,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
      * @param req
      */
     @Override
+    @CacheEvict(value = "cloud-goods:releaseGoods",key = "#req.sellerId")
     public void updateRes(GoodsSaveTestReq req) {
         Goods goods = new Goods();
         BeanUtils.copyProperties(req,goods);
@@ -506,5 +525,25 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         return goodsVO;
     }
 
-
+    /**
+     * 查询商品库存阿浏览量
+     * @param id
+     * @return
+     */
+    @Override
+    public GoodsVO getViewCount(Long id) {
+        GoodsVO vo = new GoodsVO();
+        // 浏览量+1
+        baseMapper.updateViewCount(id);
+        Integer residueGoods = storageFeignService.residueGoodsId(id);
+        Integer residue = storageFeignService.residue(id);
+        if (residue != null) {
+            vo.setTotal(residue);
+        } else {
+            vo.setTotal(residueGoods == null ? 0 : residueGoods);
+        }
+        Integer count = baseMapper.getViewCount(id);
+        vo.setViewCount(count);
+        return vo;
+    }
 }

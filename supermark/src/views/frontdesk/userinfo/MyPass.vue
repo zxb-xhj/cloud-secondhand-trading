@@ -51,12 +51,12 @@
 
     </div>
     <div style="float: left;width: 49%;">
-      <el-card class="box-card">
+      <el-card class="box-card" style="">
         <div slot="header" class="clearfix">
           <span>修改密码</span>
         </div>
 
-        <el-form ref="rulForm" label-width="200px" status-icon :model="ruleForm" class="demo-ruleForm" :rules="rules">
+        <el-form ref="rulForm" label-width="13.5vw" status-icon :model="ruleForm" class="demo-ruleForm" :rules="rules">
           <el-form-item>
             <span><i class="el-icon-lock">注意:</i>请保护好你的隐私</span>
           </el-form-item>
@@ -70,8 +70,8 @@
             <el-input type="password" v-model="ruleForm.checkPass" auto-complete="off"></el-input>
           </el-form-item>
           <el-form-item class="btn">
-            <el-button type="warning" @click="submitForm()">保存修改</el-button>
-            <el-button type="info" @click="resetForm()">重置</el-button>
+            <el-button type="warning" @click="submitForm()"><div style="font-size: 1.7vh;">保存修改</div></el-button>
+            <el-button type="info" @click="resetForm()"><div style="font-size: 1.7vh;">重置</div></el-button>
           </el-form-item>
         </el-form>
       </el-card>
@@ -82,9 +82,9 @@
           <span>入账记录</span>
         </div>
 
-        <el-form ref="rulForm" label-width="200px" status-icon :model="ruleForm" class="demo-ruleForm" :rules="rules">
-          <div style="height: 19.55rem;overflow:auto">
-            <el-table :data="recordedVos" v-loading="listLoading" :row-style="{ height: '45px' }" :cell-style="{ padding: '0px' }"
+        <el-form ref="rulForm" label-width="20vw" status-icon :model="ruleForm" class="demo-ruleForm" :rules="rules">
+          <div style="height: 45.5vh;overflow:auto">
+            <el-table :data="recordedVos" v-loading="listLoading" :row-style="{ height: '10vh' }" :cell-style="{ padding: '0px' }"
               element-loading-text="Loading" border fit highlight-current-row>
               <el-table-column align="center" label="订单号" prop="orderSn" width="120" :show-overflow-tooltip="true" />
               <el-table-column align="center" label="商品名称" prop="goodsName" width="120 " :show-overflow-tooltip="true" />

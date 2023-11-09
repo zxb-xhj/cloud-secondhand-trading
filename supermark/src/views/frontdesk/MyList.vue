@@ -1,29 +1,35 @@
 <template>
   <div style="background-color: #f7f7f7db;">
     <div v-for="item in list" :key="item.id">
-      <div class="photo-list" style="float: left;background-color: white;border: 1px;border-radius: 30px;width: 22%;margin-right: 30px;height: 27rem;
+      <div class="photo-list" style="float: left;background-color: white;border: 1px;border-radius: 30px;width: 22%;margin-right: 30px;height: 66.5vh;
             margin-top: 2%;">
 
         <h3
-          style="margin-top: 8%;margin-left: 8%;margin-bottom: 2%;width: 15rem;height: 2rem;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">
+          style="margin-top: 2vh;margin-left: 4vw;margin-bottom: 2vw;width: 15vw;height: 1.5vh;text-overflow: ellipsis;font-size: 3vh;white-space: nowrap;overflow: hidden;border-radius: 10px;">
           {{ item.name }}</h3>
         <router-link :to="{ path: '/detail/' + item.id }">
-          <img :src="item.defaultImg" alt="" style="height: 60%;width: 75%;margin-left: 2.5rem;">
+          <img :src="item.defaultImg" alt="" style="height: 41vh;width: 16vw;margin-left: 1.8vw;border-radius: 5px;">
         </router-link>
-        <div style="margin-left: 8%;margin-top: 2%;size: 15px;font-size: 20px;">￥{{ item.price }}
+        <!-- <div style="margin-left: 8%;margin-top: 2%;size: 15px;font-size: 20px;">￥{{ item.price }}
           <span style="border: solid crimson 1px;border-radius: 12px;color: brown;font-size: 2%;"><span
-              style="margin: 2%;">优惠后￥{{ item.price }}</span></span>
-        </div>
+              style="margin: 2%;font-size: 10px;">优惠后￥{{ item.price }}</span></span>
+        </div> -->
+        <div style="margin-left: 9%;margin-top: 2%;size: 15px;width: 20vw;">
+                  <div style="float: left;font-size: 2.7vh;">￥{{item.goodsPrice}} </div>
+                  <div style="border: solid crimson 1px;border-radius: 13px;color: brown;float: left;margin-top: 1vh;margin-left: 0.5vw;">
+                    <div style="margin: 0.3vh;font-size: 1.35vh;">优惠后￥{{item.goodsPrice}}</div>
+                  </div>
+                </div>
         <router-link :to="{ path: '/nowConfirmcart/' + [[item.id]] }">
           <button class="el-dropdown-link" v-if="xianshi" style="border-radius: 30px;background-color: white;width: 80%;margin-left: 10%;
-                border: solid 1px;height: 40px;margin-top: 5%;">
-            <h2 style="color: #575757;">立即购买</h2>
+                border: solid 1px;height: 6vh;margin-top: 2vh;">
+            <div style="color: #575757;font-size: 3vh;font-weight: bold;">立即购买</div>
           </button>
         </router-link>
         <router-link :to="{ path: '/login/' }">
           <button class="el-dropdown-link" v-if="!xianshi" style="border-radius: 30px;background-color: white;width: 80%;margin-left: 10%;
-                border: solid 1px;height: 40px;margin-top: 5%;">
-            <h2 style="color: #575757;">立即登录</h2>
+                border: solid 1px;height: 6vh;margin-top: 2vh;">
+            <div style="color: #575757;font-size: 3vh;font-weight: bold;">立即登录</div>
           </button>
         </router-link>
       </div>

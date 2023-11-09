@@ -17,20 +17,20 @@
             </el-steps>
         </div>
         <div>
-            <div style="margin-bottom: 2rem;margin-top: 2rem;margin-left: 3rem;font-size: 1.2rem;">
+            <div style="margin-bottom: 2rem;margin-top: 2rem;margin-left: 3rem;font-size: 2.7vh;">
                 订单号：{{ this.goodsForm.order.orderSn }}
             </div>
-            <div style="float: left;">
-                <div style="height: 22rem;border: solid rgb(238, 238, 238) 1px;width: 39rem;">
+            <div style="float: left;height: 42vh;">
+                <div style="height: 22vh;border: solid rgb(238, 238, 238) 1px;width: 35vw;margin-left: 2vw;">
                     <img :src="this.goodsForm.orderGoodsDTO.defaultImg"
-                        style="width: 120px;height: 120px;float: left;margin: 15px;">
-                    <div style="margin-top: 20px;">
-                        <div style="float: left;width: 50%;">{{ this.goodsForm.orderGoodsDTO.name }}</div>
-                        <div style="float: left;width: 5%;">×1</div>
-                        <div style="float: left;width: 15%;">¥ {{ this.goodsForm.orderGoodsDTO.price }}</div>
-                        <div style="height: 2rem;clear: left;"></div>
-                        <div style="clear: left;margin-left: 1rem;margin-right: 1rem;">
-                            <div><span>描述：</span><span style="color: #717171;font-size: 15px;">{{
+                        style="width: 9vw;height: 18.5vh;float: left;margin: 2vh;">
+                    <div style="margin-top: 2vh;">
+                        <div style="float: left;width: 15vw;font-size: 2.5vh;">{{ this.goodsForm.orderGoodsDTO.name }}</div>
+                        <div style="float: left;width: 2vw;font-size: 2vh;">×1</div>
+                        <div style="float: left;width: 5vw;font-size: 2vh;">¥ {{ this.goodsForm.orderGoodsDTO.price }}</div>
+                        <div style="height: 2vh;clear: left;"></div>
+                        <div style="clear: left;margin-left: 1vw;margin-right: 1vw;">
+                            <div><span style="font-size: 2.5vh;">描述：</span><span style="color: #717171;font-size: 2vh;">{{
                                 this.goodsForm.orderGoodsDTO.description }}</span>
                             </div>
                         </div>
@@ -41,70 +41,70 @@
 
 
             </div>
-            <div style="float: left;margin-left: 20px;">
+            <div style="float: left;margin-left: 2vw;width: 40vw;height: 22vh;">
                 <div>
-                    <div style="float: left;">收货信息：</div>
+                    <div style="float: left;font-size: 2.5vh;clear: left;">收货信息：</div>
                     <div v-if="this.goodsForm.order.state == 0 || this.goodsForm.order.state == 1"
-                        style="float: right;margin-right: 2rem;"><el-button plain @click="updateAddr(1)">修改收货地址</el-button>
+                        style="float: right;margin-right: 2vw;font-size: 2.5vh;"><el-button style="font-size: 2.5vh;" plain @click="updateAddr(1)">修改收货地址</el-button>
                     </div>
                 </div>
-                <div style="height: 10px;"></div>
-                <div style="margin-top: 40px;">
-                    <div>
+                <div style="height: 1vh;"></div>
+                <div style="margin-top: 5vh;font-size: 2.3vh;margin-left: 2vw;">
+                    <div style="font-size: 2.3vh;">
                         <span>姓 名：</span>
                         <span>{{ this.goodsForm.orderAddr.consignee }}</span>
                     </div>
-                    <div style="height: 10px;"></div>
-                    <div>
+                    <div style="height: 1vh;"></div>
+                    <div style="font-size: 2.3vh;">
                         <span>收货地址：</span>
                         <span>{{ this.goodsForm.orderAddr.province }} {{ this.goodsForm.orderAddr.city }} {{
                             this.goodsForm.orderAddr.area }} {{ this.goodsForm.orderAddr.addr }}</span>
                     </div>
                 </div>
-                <div style="height: 10px;"></div>
-                <div style="margin-top: 40px;">
-                    <div style="float: left;width: 20rem;">
+                <div style="height: 2vh;"></div>
+                <div style="margin-top: 2vh;">
+                    <div style="float: left;width: 20vw;font-size: 2.5vh;">
                         <span>创建时间：</span>
                         <span>{{ this.goodsForm.order.createTime }}</span>
                     </div>
-                    <div style="float: right;width: 20rem;">
+                    <div style="float: right;width: 20vw;font-size: 2.5vh;">
                         <span>付款时间：</span>
                         <span>{{ this.goodsForm.order.payTime }}</span>
                     </div>
                 </div>
-                <div style="height: 50px;"></div>
+                <div style="height: 7vh;"></div>
                 <div style="">
-                    <div style="float: left;width: 20rem;">
+                    <div style="float: left;width: 20vw;font-size: 2.5vh;">
                         <span>发货时间：</span>
                         <span>{{ this.goodsForm.order.deliveryTime }}</span>
                     </div>
-                    <div style="float: right;width: 20rem;">
+                    <div style="float: right;width: 20vw;font-size: 2.5vh;">
                         <span>完成时间：</span>
                         <span>{{ this.goodsForm.order.finallyTime }}</span>
                     </div>
                 </div>
-                <div style="height: 50px;"></div>
+                <div style="height: 7vh;"></div>
                 <div style="">
-                    <div style="float: left;width: 20rem;">
+                    <div style="float: left;width: 20vw;font-size: 2.5vh;">
                         <span>支付方式：</span>
                         <span v-if="goodsForm.order.payType == 1">支付宝支付</span>
                         <span v-if="goodsForm.order.payType == 2">微信支付</span>
                         <span v-if="goodsForm.order.payType == 3">花呗支付</span>
                     </div>
-                    <div style="float: right;width: 20rem;">
-                        <span>支付流水号：</span>
-                        <span v-if="goodsForm.order.isPayed == 1">0000000000000000000</span>
+                    <div style="float: right;width: 20vw;font-size: 2.5vh;">
+                        <span style="font-size: 2.5vh;">支付流水号：</span>
+                        <span style="font-size: 2vh;" v-if="goodsForm.order.isPayed == 1">0000000000000000000</span>
                     </div>
                 </div>
-                <div style="height: 50px;"></div>
+                <div style="height: 7vh;"></div>
                 <div style="">
-                    <div v-if="status == 2 || status == 3" style="float: left;width: 20rem;">
+                    <div v-if="status == 2 || status == 3" style="float: left;width: 30vw;font-size: 2.5vh;">
                         <span>快递：</span>
                         <span>{{ goodsForm.order.deliveryCompany }} </span>
                         <span class="copy-btn" :data-clipboard-text="danhao">{{ danhao }}</span>
                         <span style="margin-left: 10px;" @click="copy" class="el-icon-document-copy"></span>
                     </div>
-                    <div style="float: right;margin-right: 36px;">
+                    <div style="float: right;margin-right: 36px;font-size: 2.5vh;">
                         <el-button v-if="goodsForm.order.state == 0" type="primary"
                             @click="payment(goodsForm.order.orderSn)">付款</el-button>
                         <el-button v-if="goodsForm.order.state == 0 || goodsForm.order.state == 1" type="danger"

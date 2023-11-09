@@ -9,6 +9,7 @@
             </span>
           </div>
           <div class="topbar-user">
+            <a href="javascript:;" @click="message()">我的消息</a>
             <a href="javascript:;" @click="backhome()">返回商城</a>
             <a href="javascript:;"  @click="reg()">退出登陆</a>
           </div>
@@ -84,6 +85,9 @@ name: "userInfo",
     },
     backhome(){
       this.$router.push("/home")
+    },
+    message(){
+      this.$router.push("/message")
     }
   },
   mounted() {

@@ -14,6 +14,7 @@ import com.lyx.member.entity.MemberAddr;
 import com.lyx.member.entity.req.MemberListPageReq;
 import com.lyx.member.entity.req.MemberLoginReq;
 import com.lyx.member.entity.req.MemberPassReq;
+import com.lyx.member.entity.vo.MemberInfoVO;
 import com.lyx.member.entity.vo.MemberLoginVo;
 import com.lyx.member.entity.vo.MemberVO;
 import com.lyx.member.mapper.MemberMapper;
@@ -23,10 +24,13 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lyx.member.utils.MobileEncrypt;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.bouncycastle.asn1.x500.style.RFC4519Style.member;
 
@@ -212,6 +216,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
      * @param req
      */
     @Override
+    @CacheEvict(value = "cloud-member:member",key = "#req.memberId")
     public void updateMember(MemberListPageReq req) {
         LambdaUpdateWrapper<Member> wrapper = Wrappers.lambdaUpdate();
         wrapper.eq(req.getMemberId()!=null,Member::getId,req.getMemberId())
@@ -227,11 +232,17 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
      * @return
      */
     @Override
-    public MemberVO getMemberById(Long id) {
+    @Cacheable(value = "cloud-member:member",key = "#id")
+    public MemberInfoVO getMemberById(Long id) {
         Member member = getById(id);
-        MemberVO memberVO = new MemberVO();
-        BeanUtils.copyProperties(member,memberVO);
-        return memberVO;
+        MemberInfoVO memberInfoVO = new MemberInfoVO();
+        BeanUtils.copyProperties(member,memberInfoVO);
+//        memberInfoVO.setMobile(member.getMobile());
+//        memberInfoVO.setId(member.getId());
+//        memberInfoVO.setNickname(member.getNickname());
+//        memberInfoVO.setUsername(member.getUsername());
+//        memberInfoVO.setEmail(member.getEmail());
+        return memberInfoVO;
     }
 
     @Override
@@ -259,5 +270,27 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
     public String getMemberMobile(Long id) {
         Member member = getById(id);
         return member.getMobile();
+    }
+
+    /**
+     * 根据id查询用户
+     */
+    @Override
+    public List<Map<String,Object>> getMessageUserName(List<Long> ids) {
+        if (ids.size()>0){
+            return baseMapper.selectUserName(ids);
+        }
+        return null;
+    }
+
+    /**
+     * 获取昵称
+     * @param id
+     * @return
+     */
+    @Override
+    public String getMemberName(Long id) {
+        Map<String,String> name = baseMapper.getMemberName(id);
+        return name.get("nickname")!=null?name.get("nickname"):name.get("username");
     }
 }

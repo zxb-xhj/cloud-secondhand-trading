@@ -6,19 +6,19 @@
                 <i class="el-icon-arrow-left"></i>返回
             </a>
         </div>
-        <div v-loading="listLoading" class="infinite-list" v-infinite-scroll="load" style="overflow:auto;height: 37rem;">
+        <div v-loading="listLoading" class="infinite-list" v-infinite-scroll="load" style="overflow:auto;height: 76vh;">
             <div>
 
-                <div style="margin-left: 4rem;margin-right: 2rem;height: 18rem;">
-                    <div style="height: 15rem;width: 100%;">
-                        <img :src="this.goodsForm.defaultImg" style="width: 15rem;height: 15rem;float: left;margin: 15px;">
-                        <div style="float: left;margin-top: 1rem;margin-left: 1rem;">
-                            <div style="float: left;font-size: 1.5rem;">{{ this.goodsForm.name }}</div>
-                            <div style="float: right;width: 10rem;font-size: 1.2rem;">价格：<span
-                                    style="color:rgb(234, 12, 12);font-size: 1.4rem;">¥ {{ this.goodsForm.price }}</span>
+                <div style="margin-left: 4rem;margin-right: 2rem;height: 45vh;">
+                    <div style="height: 45vh;width: 78vw;">
+                        <img :src="this.goodsForm.defaultImg" style="width: 18vw;height: 36vh;float: left;margin: 2vh;">
+                        <div style="float: left;margin-top: 1rem;margin-left: 1rem;width: 50vw;">
+                            <div style="float: left;font-size: 4vh;">{{ this.goodsForm.name }}</div>
+                            <div style="float: right;width: 10rem;font-size: 3vh;">价格：<span
+                                    style="color:rgb(234, 12, 12);font-size: 2.8vh;">¥ {{ this.goodsForm.price }}</span>
                             </div>
                             <div style="height: 1rem;"></div>
-                            <div style="clear: left;width: 55rem;clear: left;margin-top: 3rem;height: 2.4rem;">
+                            <div style="clear: left;width: 30vw;clear: left;margin-top: 3rem;height: 2.4rem;">
                                 <div><span>描述：</span><span style="color: #717171;font-size: 15px;word-break: break-all;overflow: hidden;display: -webkit-box;
                                     -webkit-line-clamp: 2;-webkit-box-orient: vertical;">{{ this.goodsForm.description }}</span>
                                 </div>
@@ -30,7 +30,7 @@
                             <div style="height: 1rem;"></div>
                             <div style="clear: left;">
                                 <span v-for="img in images" :key="img.id">
-                                    <el-image style="width: 6rem;height: 6rem;float: left;margin: 15px;" alt="无法显示"
+                                    <el-image style="width: 8vw;height: 15.5vh;float: left;margin: 15px;" alt="无法显示"
                                         :src="img.url" :preview-src-list="image" v-if="[[images != null]]" />
                                 </span>
                             </div>
@@ -41,7 +41,7 @@
                 </div>
                 <div>
                 </div>
-                <div style="float: left;margin-left: 30px;">
+                <div style="float: left;margin-left: 30px;width: 77vw;">
                     <template>
                         <el-table v-loading="listLoading" :row-style="{ height: '45px' }" :cell-style="{ padding: '0px' }"
                             :data="List" element-loading-text="Loading" border fit highlight-current-row>

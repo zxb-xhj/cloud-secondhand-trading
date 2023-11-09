@@ -1,15 +1,15 @@
 <template>
-  <div class="infinite-list" style="overflow:auto;height: 38rem;">
+  <div class="infinite-list" style="overflow:auto;height: 87vh;">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>个人资料</span>
       </div>
 
       <div
-        style="background-color: rgb(243, 88, 121);height: 13rem;z-index:-1;margin-top: 1rem;margin-left: 1rem;margin-right: 1rem;">
-        <div style="float: left;width: 28.5rem;height: 6.8rem;margin: 4rem;">
+        style="background-color: rgb(243, 88, 121);height: 27vh;z-index:-1;margin-top: 1rem;margin-left: 1rem;margin-right: 1rem;width: 79vw;">
+        <div style="float: left;width: 28vw;height: 8vh;margin: 4rem;">
           <div style="float: left;height: 100%;width: 10rem;">
-            <img style="border-radius: 3rem;height: 5.5rem;width: 5.5rem;margin-left: 4rem;"
+            <img style="border-radius: 3rem;height: 10vh;width: 4.8vw;margin-left: 4rem;"
               src="https://cloud-secondhand-trading.oss-cn-shanghai.aliyuncs.com/u%3D3030190913%2C291621981%26fm%3D253%26fmt%3Dauto%26app%3D138%26f%3DJPEG.webp"
               ref="显示错误">
           </div>
@@ -17,48 +17,51 @@
             <p style="color: #ffffff;font-size: 23px;margin-left: 5px;">{{ name }}</p>
             <div
               style="font-size: 10px;  background-color:#000000;background-color:rgba(0,0,0,0.1);border-radius: 10px;height: 1.3rem;">
-              <div style="color: rgb(241, 241, 241);margin: 0.8rem;">普通会员</div>
+              <div style="color: rgb(241, 241, 241);margin: 1vh;text-align: center;">
+                <div style="height: 0.3vh;"></div>
+                <div style="">普通会员</div>
+              </div>
             </div>
             <div></div>
           </div>
         </div>
         <div v-loading="listLoading"
-          style="float: left;background-color: white;border-radius: 1.2rem;width: 33rem;height: 8.5rem;margin: 2.2rem;">
-          <div style="margin-top: 2.6rem;">
+          style="float: left;background-color: white;border-radius: 1.2rem;width: 35vw;height: 17vh;margin: 2.2rem;">
+          <div style="margin-top: 5vh;">
             <router-link :to="{ path: '/order/' }">
-              <div style="width: 25%;float: left;margin-left: 7%;">
+              <div style="width: 9vw;float: left;margin-left: 7%;">
                 <div style="float: left;">
                   <p style="color: #000;">订单数</p>
                   <p style="margin: 5px;color: #000;">{{ orderCount }}</p>
                 </div>
                 <div style="float: right;margin-top: 10px;margin-right: 10px;">
-                  <img style="width: 3rem;height: 3rem;border-radius: 1.2rem;"
+                  <img style="width: 3vw;height: 6vh;border-radius: 1.2rem;"
                     src="https://bpic.588ku.com/element_origin_min_pic/19/04/22/a1b22e857e44bef2b2601a86720263d2.jpg">
                 </div>
               </div>
             </router-link>
 
             <router-link :to="{ path: '/releaseGoods/' }">
-              <div style="width: 25%;float: left;margin-left: 7%;">
+              <div style="width: 9vw;float: left;margin-left: 7%;">
                 <div style="float: left;">
                   <p style="color: #000;">发布数</p>
                   <p style="margin: 5px;color: #000;">{{ releaseCount }}</p>
                 </div>
                 <div style="float: right;margin-top: 10px;margin-right: 10px;">
-                  <img style="width: 3rem;height: 3rem;border-radius: 1.2rem;"
+                  <img style="width: 3vw;height: 6vh;border-radius: 1.2rem;"
                     src="https://img.88icon.com/download/jpg/20210209/847926e0082b18df122dece9a75186a9_512_512.jpg!bg">
                 </div>
               </div>
             </router-link>
 
             <router-link :to="{ path: '/updatePass/' }">
-              <div style="width: 25%;float: left;margin-left: 7%;">
+              <div style="width: 9vw;float: left;margin-left: 7%;">
                 <div style="float: left;">
                   <p style="color: #000;">钱包</p>
                   <p style="margin: 5px;color: #000;font-size: 1.3rem;">****</p>
                 </div>
                 <div style="float: right;margin-top: 10px;margin-right: 10px;">
-                  <img style="width: 3rem;height: 3rem;border-radius: 1.2rem;"
+                  <img style="width: 3vw;height: 6vh;border-radius: 1.2rem;"
                     src="https://bpic.588ku.com/element_origin_min_pic/19/06/15/c67d7eff24c31c6aff4000acc293dddd.jpg">
                 </div>
               </div>
@@ -67,19 +70,20 @@
 
         </div>
       </div>
-      <div v-loading="goodsFormShowxinxi" style="height: 6rem;">
-        <div style="margin-left: 7rem;clear: left;">
+      <div v-loading="goodsFormShowxinxi" style="height: 6rem;width: 90vw;">
+        <div style="height: 2.3rem;width: 100vw;"></div>
+        <div style="margin-left: 3vw;clear: left;width: 40vw;">
           <p style="float: left;">昵称：</p>
-          <P style="float: left;width: 35rem;">{{ nickname }}</P>
+          <P style="float: left;width: 30vw;">{{ nickname }}</P>
         </div>
-        <div style="float: left;">
+        <div style="float: left;width: 40vw;">
           <p style="float: left;">手机号码：</p>
-          <P style="float: left;width: 25rem;">{{ mobile.replace(/^(\d{3})\d{4}(\d+)/, '$1****$2') }}</P>
+          <P style="float: left;width: 30vw;">{{ mobile.replace(/^(\d{3})\d{4}(\d+)/, '$1****$2') }}</P>
         </div>
-        <div style="height: 2.5rem;"></div>
-        <div style="clear: left;margin-left: 7rem;">
+        <div style="height: 2.5rem;width: 100vw;"></div>
+        <div style="clear: left;margin-left: 3vw;width: 40vw;">
           <p style="float: left;">邮箱：</p>
-          <P style="float: left;width: 38rem;">{{ email }}</P>
+          <P style="float: left;width: 30vw;">{{ email }}</P>
         </div>
       </div>
       <!-- <div style="height: 1.5rem;"></div> -->

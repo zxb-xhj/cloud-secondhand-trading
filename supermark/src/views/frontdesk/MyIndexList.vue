@@ -1,26 +1,31 @@
 <template>
 <div>
     <div v-for="item in list" :key="item.id">
-        <div class="photo-list" style="float: left;background-color: rgb(249, 249, 249);border-radius: 30px;border: 1px;width: 22%;margin-right: 30px;height: 450px;
+        <div class="photo-list" style="float: left;background-color: rgb(249, 249, 249);border-radius: 30px;border: 1px;width: 22%;margin-right: 30px;height: 66.5vh;
             margin-top: 2%;">
               
-                <h3 style="margin-top: 8%;margin-left: 8%;margin-bottom: 2%;width: 15rem;height: 2rem;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{item.goodsName}}</h3>
+                <div style="margin-top: 8%;margin-left: 8%;margin-bottom: 2%;width: 15vw;height: 2rem;text-overflow: ellipsis;font-size: 3vh;
+                white-space: nowrap;overflow: hidden;">{{item.goodsName}}</div>
                 <router-link :to="{path:'/detail/'+[[item.goodsId]]}">
-                <img :src="item.goodsImage" alt="" style="height: 60%;width: 75%;margin-left: 2.5rem;">
+                <img :src="item.goodsImage" alt="" style="height: 41vh;width: 16vw;margin-left: 1.8vw;border-radius: 5px;">
                 </router-link>
-                <div style="margin-left: 8%;margin-top: 2%;size: 15px;font-size: 20px;">￥{{item.goodsPrice}} 
-                  <span style="border: solid crimson 1px;border-radius: 13px;color: brown;font-size: 2%;"><span style="margin: 2%;">优惠后￥{{item.goodsPrice}}</span></span></div>
+                <div style="margin-left: 9%;margin-top: 2%;size: 15px;width: 20vw;">
+                  <div style="float: left;font-size: 2.7vh;">￥{{item.goodsPrice}} </div>
+                  <div style="border: solid crimson 1px;border-radius: 13px;color: brown;float: left;margin-top: 1vh;margin-left: 0.5vw;">
+                    <div style="margin: 0.3vh;font-size: 1.35vh;">优惠后￥{{item.goodsPrice}}</div>
+                  </div>
+                </div>
                   <!-- this.$router.push("/nowConfirmcart/"+this.id); -->
                   <router-link :to="{path:'/nowConfirmcart/'+[[item.id]]}">
                   <button class="el-dropdown-link" v-if="xianshi" style="border-radius: 30px;background-color: white;width: 80%;margin-left: 10%;
-                    border: solid 1px;height: 40px;margin-top: 5%;">
-                      <h2 style="color: #575757;">立即购买</h2>
+                    border: solid 1px;height: 6vh;margin-top: 2vh;">
+                      <div style="color: #575757;font-size: 3vh;font-weight: bold;">立即购买</div>
                   </button>
                   </router-link>
                   <router-link :to="{path:'/login/'}">
                   <button class="el-dropdown-link" v-if="!xianshi" style="border-radius: 30px;background-color: white;width: 80%;margin-left: 10%;
-                    border: solid 1px;height: 40px;margin-top: 5%;">
-                      <h2 style="color: #575757;">立即登录</h2>
+                    border: solid 1px;height: 6vh;margin-top: 2vh;">
+                      <div style="color: #575757;font-size: 3vh;font-weight: bold;">立即登录</div>
                   </button>
                   </router-link>
         </div>

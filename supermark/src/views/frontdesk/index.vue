@@ -19,7 +19,19 @@
       <div style="height: 2rem;"></div>
       <div>
         <div class="jpg">
-          <img style="width: 90%;border-radius: 10px;" src="@/assets/img/active.jpg" alt="">
+          <!-- <img style="width: 90%;border-radius: 10px;" src="@/assets/img/active.jpg" alt=""> -->
+          <!-- <img style="width: 90%;border-radius: 10px;" :src="imageUrl" alt=""> -->
+          <div style="width: 90%;height: 19vh;background-color: #4797c8;border-radius: 10px;">
+            <div style="float: left;">
+              <img style="border-radius: 10px;height: 19vh;width: 23vw;margin-left: 6vw;" :src="imageUrl1" alt="">
+            </div>
+            <div style="float: left;background-color: white;width: 40vw;height: 15vh;margin-top: 2vh;border-radius: 10px;margin-left: 11vw;">
+              <div>
+                <img style="border-radius: 10px;margin-top: 3vh;margin-left: 4.3vw;width: 32vw;height: 10vh;" :src="imageUrl" alt="">
+              </div>
+            </div>
+                <!-- <img style="border-radius: 10px;" :src="imageUrl2" alt=""> -->
+          </div>
         </div>
         <!-- <div style="width: 10rem;float: left;">
           <p class="active-font"><img src="@/assets/img/shopActive.png" alt=""></p>
@@ -81,12 +93,15 @@ export default {
       pageNum: 1,
       pageSize: 10,
       product: "", // 商品列表
+      imageUrl: require('@/assets/img/ershou.png'),
+      imageUrl1: require('@/assets/img/R-C.png'),
+      imageUrl2: require('@/assets/img/dzxucenpic10.png')
     };
   },
   created() {
     this.getProductList();
     this.getBannerList();
-    this.getTime1()
+    // this.getTime1()
   },
   activated() {
     if (!this.$route.meta.isBack) {
@@ -96,18 +111,17 @@ export default {
     }
     // 恢复成默认的false，避免isBack一直是true，导致下次无法获取数据
     this.$route.meta.isBack = false
-    this.getTime()
+    // this.getTime()
   },
   methods: {
-    getTime(){
-      this.$http.get("/api/cloud-order/order/time/" + id ).then(res => {
-            console.log(res.data)
-        });
-    },
+    // getTime(){
+    //   this.$http.get("/api/cloud-order/order/time/" + id ).then(res => {
+    //         console.log(res.data)
+    //     });
+    // },
     getBannerList() {
       this.fanhui = false;
       this.$http.get("/api/cloud-goods/banner/bannerList").then(res => {
-        console.log(res.data.data);
         this.imageArr = res.data.data
       });
     },
@@ -119,16 +133,10 @@ export default {
       })
     },
     getProductList() {
-      //获取侧边栏列表
-      // this.$http.post("/api/getAllClassification").then(res => {
-      //   this.cateList = res.data
-      // });
 
-      // 获取手机商品列表
+      // 获取商品列表
       this.$http.get("/api/cloud-goods/recommend/list?pageNo=1&pageSize=8").then(res => {
-        console.log(res.data.data.list);
         this.product = res.data.data.list;
-
       });
     },
     //倒计时

@@ -39,4 +39,11 @@ public interface GoodsMapper extends BaseMapper<Goods> {
     List<Long> category(Long categoryId);
 
     List<GoodsVO> listIds(List<Long> ids);
+
+    /**
+     * 查询浏览量
+     * @param id
+     * @return
+     */
+    Integer getViewCount(Long id);
 }

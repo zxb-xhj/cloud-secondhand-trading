@@ -134,6 +134,15 @@ public class GoodsController {
     }
 
      /**
+       * 查询商品库存和浏览量
+       */
+    @GetMapping("/viewCount/{id}")
+    public R getViewCount(@PathVariable Long id) throws ExecutionException, InterruptedException {
+        GoodsVO byId = goodsService.getViewCount(id);
+        return R.ok(byId);
+    }
+
+     /**
        * 查询商品详情
        */
     @GetMapping("/infoFeign/{id}")
@@ -164,7 +173,7 @@ public class GoodsController {
        */
     @PatchMapping("/{isOnSell}")
     public R changeIsOnSell(@RequestBody List<Long> goodsIds ,@PathVariable("isOnSell")Integer isOnSell){
-        goodsService.changeIsOnSell(goodsIds,isOnSell);
+        goodsService.changeIsOnSell(goodsIds,isOnSell,null);
         log.info("goodsId{}",goodsIds);
         log.info("isOnSell{}",isOnSell);
         return R.ok();
@@ -173,11 +182,13 @@ public class GoodsController {
      /**
        * 切换商品上架状态
        */
-    @PatchMapping("/{isOnSell}/{goodsId}")
-    public R updateState(@PathVariable("isOnSell")Integer isOnSell,@PathVariable("goodsId")Long goodsId){
+    @PatchMapping("/{isOnSell}/{goodsId}/{memberId}")
+    public R updateState(@PathVariable("isOnSell")Integer isOnSell,
+                         @PathVariable("goodsId")Long goodsId,
+                         @PathVariable("memberId")Long memberId){
         ArrayList<Long> list = new ArrayList<>();
         list.add(goodsId);
-        goodsService.changeIsOnSell(list,isOnSell);
+        goodsService.changeIsOnSell(list,isOnSell,memberId);
         log.info("goodsId{}",goodsId);
         log.info("isOnSell{}",isOnSell);
         return R.ok();

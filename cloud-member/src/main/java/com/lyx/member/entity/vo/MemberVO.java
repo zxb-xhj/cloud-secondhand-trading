@@ -2,8 +2,11 @@ package com.lyx.member.entity.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lyx.member.entity.MemberAddr;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -11,7 +14,10 @@ import java.time.LocalDateTime;
  * @author 黎勇炫
  * @date 2023年03月26日 12:03
  */
-public class MemberVO {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class MemberVO implements Serializable {
 
     /**
      * id

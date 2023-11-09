@@ -6,10 +6,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.lyx.member.entity.req.MemberListPageReq;
 import com.lyx.member.entity.req.MemberLoginReq;
 import com.lyx.member.entity.req.MemberPassReq;
+import com.lyx.member.entity.vo.MemberInfoVO;
 import com.lyx.member.entity.vo.MemberLoginVo;
 import com.lyx.member.entity.vo.MemberVO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -82,7 +84,7 @@ public interface MemberService extends IService<Member> {
      * @param id
      * @return
      */
-    MemberVO getMemberById(Long id);
+    MemberInfoVO getMemberById(Long id);
     /**
      * 查询用户发布商品数量
      */
@@ -98,4 +100,14 @@ public interface MemberService extends IService<Member> {
      * @return
      */
     String getMemberMobile(Long id);
+    /**
+     * 根据id查询用户
+     */
+    List<Map<String,Object>> getMessageUserName(List<Long> ids);
+    /**
+     * 获取昵称
+     * @param id
+     * @return
+     */
+    String getMemberName(Long id);
 }
