@@ -1,5 +1,6 @@
 # cloud-secondhand-trading
-二手交易平台  SpringCloud+Redis+Elastisearch+RabbitMQ+Mysql+Vue
+二手交易平台  
+#SpringCloud+Redis+Elastisearch+RabbitMQ+Mysql+Vue
 
 此系统具有两个操作用户角色，即用户和系统管理员。用户根据自己的情况通过系统购买商品或者发布自己需要出售的商品及其信息；系统管理员在后台对商品和用户进行管理，对资料进行统计分析并开展系统的正常运行维护工作。
 
