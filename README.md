@@ -1,5 +1,6 @@
 # cloud-secondhand-trading
-二手交易平台
+二手交易平台  
+#SpringCloud+Redis+Elastisearch+RabbitMQ+Mysql+Vue
 
 此系统具有两个操作用户角色，即用户和系统管理员。用户根据自己的情况通过系统购买商品或者发布自己需要出售的商品及其信息；系统管理员在后台对商品和用户进行管理，对资料进行统计分析并开展系统的正常运行维护工作。
 
@@ -10,6 +11,11 @@
 ![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/ef8e6072-c869-47c8-afe5-4c8ba91926d0)
 商品信息  --展示商品的详细信息和商家的联系方式
 ![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/2c6a3c84-9f83-4645-a330-4d6eedb4227d)
+商品评论
+![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/67433768-5dce-4eea-ab54-aecbfbaad604)
+聊天服务
+![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/13852399-6d25-4b98-8f65-1d64b80661da)
+![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/aafbb8f6-56b2-4e4b-8d04-ec42b002abc6)
 确认订单  --可添加、选择和修改收货地址
 ![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/03453e2d-b463-4ff5-8c5e-eaba90060aaf)
 ![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/53047cd0-5d9c-4ca5-b2a7-dccb193dfec6)
