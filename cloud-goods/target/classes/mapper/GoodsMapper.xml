@@ -30,4 +30,7 @@
             #{id}
         </foreach>
     </select>
+    <select id="getViewCount" resultType="java.lang.Integer">
+        select view_count from gms_goods where id = #{id}
+    </select>
 </mapper>

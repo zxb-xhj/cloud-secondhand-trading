@@ -2,4 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lyx.member.mapper.MemberMapper">
 
+    <select id="selectUserName" resultType="java.util.Map">
+        select id,username,nickname from ums_member where id in
+        <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+    <select id="getMemberName" resultType="java.util.Map">
+        select username,nickname from ums_member where id = #{id}
+    </select>
 </mapper>
