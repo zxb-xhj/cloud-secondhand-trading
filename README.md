@@ -32,9 +32,11 @@
 ![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/63800969-baef-47db-8aae-960742329e63)
 ![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/c30baa4e-7e1f-44a0-b748-d81700ee912e)
 管理端部分页面展示
-![Uploading image.png…]()
 
-![Uploading image.png…]()
+![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/4dabac00-61dc-476e-9da1-b903d550b8f3)
+
+![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/42a15c3e-5561-4153-aa8d-203865899cd9)
+
 
 ![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/c58b01cb-4231-4f15-ae8e-af5b05daa203)
 
