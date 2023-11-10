@@ -31,6 +31,10 @@
 订单页面  --查看自己所有订单和订单详情
 ![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/63800969-baef-47db-8aae-960742329e63)
 ![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/c30baa4e-7e1f-44a0-b748-d81700ee912e)
+管理端部分页面展示
+![Uploading image.png…]()
 
+![Uploading image.png…]()
 
+![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/c58b01cb-4231-4f15-ae8e-af5b05daa203)
 
