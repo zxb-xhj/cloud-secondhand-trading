@@ -9,8 +9,9 @@
 ![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/3d2eb216-f6b6-4bb3-b383-1aebc80c0bf9)
 商品展示  
 ![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/ef8e6072-c869-47c8-afe5-4c8ba91926d0)
-商品信息  --展示商品的详细信息和商家的联系方式
-![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/2c6a3c84-9f83-4645-a330-4d6eedb4227d)
+商品信息  --展示商品的详细信息和商家，点击聊一聊和商家聊天
+![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/8fcf2261-d532-4d2a-b744-0e72434a8de5)
+
 商品评论
 ![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/67433768-5dce-4eea-ab54-aecbfbaad604)
 聊天服务
