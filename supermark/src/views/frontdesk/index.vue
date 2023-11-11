@@ -40,7 +40,7 @@
           </router-link>
         </div> -->
         <div style="height: 3rem;"></div>
-        <div class="" style="margin-left: 7%;margin-right: 2%;background-color: rgb(209, 209, 209);">
+        <div class="" style="margin-left: 7vw;margin-right: 2vw;background-color: rgb(209, 209, 209);">
           <MyIndexList :list="product" v-if="product.length > 0"></MyIndexList>
           <div v-else class="none-product">抱歉没有找到相关的商品，请看看其他的商品</div>
         </div>
@@ -101,13 +101,14 @@ export default {
   created() {
     this.getProductList();
     this.getBannerList();
+    console.log(this.$route.path)
     // this.getTime1()
   },
   activated() {
     if (!this.$route.meta.isBack) {
       // 如果isBack是false，表明需要获取新数据，否则就不再请求，直接使用缓存的数据
-      this.getBannerList()
-      this.getProductList()
+      // this.getBannerList()
+      // this.getProductList()
     }
     // 恢复成默认的false，避免isBack一直是true，导致下次无法获取数据
     this.$route.meta.isBack = false

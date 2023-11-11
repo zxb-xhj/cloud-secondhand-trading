@@ -45,9 +45,10 @@
             active-text-color="#409eff"
             router
         >
-          <div></div>
           <el-menu-item index="/index">首页</el-menu-item>
           <el-menu-item index="/goods">全部商品</el-menu-item>
+          
+    <!-- console.log(this.$route.path) -->
 <!--          <el-menu-item index="/miao">抢购商品</el-menu-item>-->
         </el-menu>
       </div>
@@ -96,10 +97,13 @@ beforeUpdate() {
         query:""
       },
       username:"",
-      nickname:""
+      nickname:"",
+      path: false
     };
   },
   activated() {
+    this.path = this.$route.path.substring(0,7)=='/detail'
+    console.log(this.$route.path.substring(0,7))
   if(sessionStorage.getItem("token")){
     this.username=sessionStorage.getItem('username');
     this.nickname =sessionStorage.getItem('nickname')=="null"?this.$store.getters.getUser:sessionStorage.getItem('nickname')
@@ -111,6 +115,7 @@ beforeUpdate() {
   
   },
   created(){
+    console.log(this.$route.path.substring(0,7))
     this.getfanhui();
   },
   methods: {
@@ -196,5 +201,8 @@ beforeUpdate() {
 .header-search{
   width: 319px;
   margin-left: 60px;
+}
+.el-dropdown-link:hover{
+  color: #d1d1d1;
 }
 </style>

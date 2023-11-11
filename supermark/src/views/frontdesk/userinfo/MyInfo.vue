@@ -1,40 +1,40 @@
 <template>
   <div class="infinite-list" style="overflow:auto;height: 87vh;">
-    <el-card class="box-card">
+    <el-card style="width: 80vw;">
       <div slot="header" class="clearfix">
-        <span>个人资料</span>
+        <span style="font-size: 2.5vh;">个人资料</span>
       </div>
 
       <div
-        style="background-color: rgb(243, 88, 121);height: 27vh;z-index:-1;margin-top: 1rem;margin-left: 1rem;margin-right: 1rem;width: 79vw;">
-        <div style="float: left;width: 28vw;height: 8vh;margin: 4rem;">
-          <div style="float: left;height: 100%;width: 10rem;">
-            <img style="border-radius: 3rem;height: 10vh;width: 4.8vw;margin-left: 4rem;"
+        style="background-color: rgb(243, 88, 121);height: 27vh;z-index:-1;margin-top: 1vh;margin-left: 1vw;margin-right: 1vw;width: 75vw;">
+        <div style="float: left;width: 25vw;height: 8vh;margin: 6vh;">
+          <div style="float: left;height: 100%;width: 10vw;margin-top: 3vh;">
+            <img style="border-radius: 100%;height: 10vh;width: 4.8vw;margin-left: 6vw;"
               src="https://cloud-secondhand-trading.oss-cn-shanghai.aliyuncs.com/u%3D3030190913%2C291621981%26fm%3D253%26fmt%3Dauto%26app%3D138%26f%3DJPEG.webp"
               ref="显示错误">
           </div>
-          <div style="float: left;margin-left: 0.5rem;margin-top: 1rem;">
-            <p style="color: #ffffff;font-size: 23px;margin-left: 5px;">{{ name }}</p>
+          <div style="float: left;margin-left: 2.5vw;margin-top: 4vh;">
+            <p style="color: #ffffff;font-size: 3vh;margin-left: 0.3vw;">{{ name }}</p>
             <div
-              style="font-size: 10px;  background-color:#000000;background-color:rgba(0,0,0,0.1);border-radius: 10px;height: 1.3rem;">
+              style="background-color:#000000;background-color:rgba(0,0,0,0.1);border-radius: 10px;height: 2.6vh;">
               <div style="color: rgb(241, 241, 241);margin: 1vh;text-align: center;">
                 <div style="height: 0.3vh;"></div>
-                <div style="">普通会员</div>
+                <div style="font-size: 1.5vh;">普通会员</div>
               </div>
             </div>
             <div></div>
           </div>
         </div>
         <div v-loading="listLoading"
-          style="float: left;background-color: white;border-radius: 1.2rem;width: 35vw;height: 17vh;margin: 2.2rem;">
+          style="float: left;background-color: white;border-radius: 1.2rem;width: 35vw;height: 17vh;margin: 2vh;margin-top: 5.5vh;margin-left: 4vw;">
           <div style="margin-top: 5vh;">
             <router-link :to="{ path: '/order/' }">
-              <div style="width: 9vw;float: left;margin-left: 7%;">
+              <div style="width: 8vw;float: left;margin-left: 3vw;">
                 <div style="float: left;">
-                  <p style="color: #000;">订单数</p>
-                  <p style="margin: 5px;color: #000;">{{ orderCount }}</p>
+                  <p style="color: #000;font-size: 2.4vh;">订单数</p>
+                  <p style="margin: 1.2vh;color: #000;font-size: 2.2vh;">{{ orderCount }}</p>
                 </div>
-                <div style="float: right;margin-top: 10px;margin-right: 10px;">
+                <div style="float: right;margin-top: 1vh;margin-right: 1vw;">
                   <img style="width: 3vw;height: 6vh;border-radius: 1.2rem;"
                     src="https://bpic.588ku.com/element_origin_min_pic/19/04/22/a1b22e857e44bef2b2601a86720263d2.jpg">
                 </div>
@@ -42,12 +42,12 @@
             </router-link>
 
             <router-link :to="{ path: '/releaseGoods/' }">
-              <div style="width: 9vw;float: left;margin-left: 7%;">
+              <div style="width: 8vw;float: left;margin-left: 3vw;">
                 <div style="float: left;">
-                  <p style="color: #000;">发布数</p>
-                  <p style="margin: 5px;color: #000;">{{ releaseCount }}</p>
+                  <p style="color: #000;font-size: 2.4vh;">发布数</p>
+                  <p style="margin: 1.2vh;color: #000;font-size: 2.2vh;">{{ releaseCount }}</p>
                 </div>
-                <div style="float: right;margin-top: 10px;margin-right: 10px;">
+                <div style="float: right;margin-top: 1vh;margin-right: 1vw;">
                   <img style="width: 3vw;height: 6vh;border-radius: 1.2rem;"
                     src="https://img.88icon.com/download/jpg/20210209/847926e0082b18df122dece9a75186a9_512_512.jpg!bg">
                 </div>
@@ -55,12 +55,12 @@
             </router-link>
 
             <router-link :to="{ path: '/updatePass/' }">
-              <div style="width: 9vw;float: left;margin-left: 7%;">
+              <div style="width: 8vw;float: left;margin-left: 3vw;">
                 <div style="float: left;">
-                  <p style="color: #000;">钱包</p>
-                  <p style="margin: 5px;color: #000;font-size: 1.3rem;">****</p>
+                  <p style="color: #000;font-size: 2.4vh;">钱包</p>
+                  <p style="margin: 1.2vh;color: #000;font-size: 2.4vh;">****</p>
                 </div>
-                <div style="float: right;margin-top: 10px;margin-right: 10px;">
+                <div style="float: right;margin-top: 1vh;margin-right: 1vw;">
                   <img style="width: 3vw;height: 6vh;border-radius: 1.2rem;"
                     src="https://bpic.588ku.com/element_origin_min_pic/19/06/15/c67d7eff24c31c6aff4000acc293dddd.jpg">
                 </div>
@@ -70,7 +70,7 @@
 
         </div>
       </div>
-      <div v-loading="goodsFormShowxinxi" style="height: 6rem;width: 90vw;">
+      <div v-loading="goodsFormShowxinxi" style="height: 6rem;width: 90vw;font-size: 2.3vh;">
         <div style="height: 2.3rem;width: 100vw;"></div>
         <div style="margin-left: 3vw;clear: left;width: 40vw;">
           <p style="float: left;">昵称：</p>
@@ -88,7 +88,7 @@
       </div>
       <!-- <div style="height: 1.5rem;"></div> -->
     </el-card>
-    <div>
+    <div style="font-size: 2.3vh;">
       <div style="margin-top: 7px;">
         <div style="float: left;margin-left: 2%;" @click="getMember">
           <el-button plain>修改信息</el-button>
@@ -102,16 +102,16 @@
       </div>
       <div style="clear: left;"></div>
       <template>
-        <el-table v-loading="listLoading" :row-style="{ height: '45px' }" :cell-style="{ padding: '0px' }"
+        <el-table v-loading="listLoading" :row-style="{ height: '5vh' }" :cell-style="{ padding: '0px' }"
           :data="orderAddrsList" element-loading-text="Loading" border fit highlight-current-row>
           <!-- <el-table-column type="selection" width="55" /> -->
-          <el-table-column align="center" label="名字" prop="consignee" width="150 " :show-overflow-tooltip="true" />
-          <el-table-column label="手机号码" align="center" prop="mobile" width="150" :show-overflow-tooltip="true" />
-          <el-table-column align="center" label="省" prop="province" width="150" :show-overflow-tooltip="true" />
-          <el-table-column align="center" label="市" prop="city" width="150" :show-overflow-tooltip="true" />
+          <el-table-column align="center" label="名字" prop="consignee"  :show-overflow-tooltip="true" />
+          <el-table-column label="手机号码" align="center" prop="mobile"  :show-overflow-tooltip="true" />
+          <el-table-column align="center" label="省" prop="province" :show-overflow-tooltip="true" />
+          <el-table-column align="center" label="市" prop="city" :show-overflow-tooltip="true" />
           <el-table-column label="区\县" align="center" prop="area" />
-          <el-table-column label="详细地址" align="center" prop="addr" width="164" :show-overflow-tooltip="true" />
-          <el-table-column label="默认" align="center" width="100">
+          <el-table-column label="详细地址" align="center" prop="addr" :show-overflow-tooltip="true" />
+          <el-table-column label="默认" align="center">
             <template v-slot="scope">
               <el-switch v-model="scope.row.isDefault" :active-value="1" :inactive-value="0" active-color="#13ce66"
                 inactive-color="#ff4949" @change="updateIsDefault(scope.row)" />
@@ -119,12 +119,12 @@
           </el-table-column>
           <!-- <el-table-column label="修改时间" align="center" prop="payAmount" width="164" :show-overflow-tooltip="true" />
       <el-table-column label="创建时间" align="center" prop="createTime" width="164" :show-overflow-tooltip="true" /> -->
-          <el-table-column align="center" prop="created_at" label="操作">
+          <el-table-column align="center" prop="created_at" label="操作" style="font-size: 1.8vh;">
             <template v-slot="scope">
               <el-button type="primary" icon="el-icon-edit" size="mini"
                 @click="updateAddr(scope.row.addrId)">修改</el-button>
               <el-button type="danger" icon="el-icon-delete" size="mini"
-                @click="deleteAddr(scope.row.addrId)">删除</el-button>
+                @click="deleteAddr(scope.row.addrId)" >删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -356,7 +356,7 @@ export default {
     console.log(!this.$route.meta.isBack)
     if (!this.$route.meta.isBack) {
       // 如果isBack是false，表明需要获取新数据，否则就不再请求，直接使用缓存的数据
-      this.Refresh()
+      // this.Refresh()
     }
     // 恢复成默认的false，避免isBack一直是true，导致下次无法获取数据
     this.$route.meta.isBack = false
@@ -549,6 +549,6 @@ export default {
 }
 
 .box-card .el-input {
-  width: 45%;
+  width: 45vw;
 }
 </style>

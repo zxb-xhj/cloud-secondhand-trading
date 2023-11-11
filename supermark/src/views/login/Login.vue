@@ -1,40 +1,53 @@
 <template>
-<div class="box">
-  
- <img style="float: left;" src="~assets/img/a.png" class="wave">
- <router-link :to="{path:'/index'}">
-    <p style="float: right;margin-top: 3rem;font-size: 2rem;margin-right: 3rem;" class="register">回到商城</p>
-  </router-link>
-  <div class="login-container">
-    <img style="float: left;" src="~assets/img/bei.svg" class="img">
-    <div class="login-box">
-      <div class="avater-box">
-        <img src="~assets/img/tou.svg" alt="">
-      </div>
-<!--      登陆表单-->
-      <el-form label-width="70px"  ref="loginFromRef" class="login-form" :model="form" :rules="rules">
-        <el-form-item label="用户:" prop="username">
-          <el-input prefix-icon="el-icon-user"  v-model="form.username"></el-input>
-        </el-form-item>
-        <el-form-item label="密码:"  prop="password">
-          <el-input @keyup.enter.native="login" prefix-icon="el-icon-lock"  type="password" v-model="form.password"></el-input>
-        </el-form-item>
-        <p class="register" @click="register">免费注册</p>
-        
-        <el-form-item class="btn">
-          <el-button type="primary" round class="login-btn" @click="login">登录</el-button>
-        </el-form-item>
-      </el-form>
+<div style="background-color: rgb(246, 246, 246);width: 100vw;height: 100vh;">
+    <a  style="margin-left: 3.5vw;float: left;margin-top: 8vh;" class="el-dropdown-link" href="javascript:history.back (-1)">
+      <i class="el-icon-arrow-left"></i>返回
+    </a>
+    <div class="floatBox">
+        <div class="sss">
+            <div class="sign-in">
+                <div style="height: 20vh;"></div>
+                <el-form  ref="loginFromRef" class="login-form" :model="form" :rules="rules">
+                <div style="font-size: 2.8vh;text-align: center;height: 8vh;">Welcome back</div>
+                    <div style="height: 4vh;font-size: 2.1vh;color: rgb(157, 176, 183);">用户</div>
+                    <el-form-item prop="username">
+                    <el-input prefix-icon="el-icon-user" v-model="form.username"></el-input>
+                    </el-form-item>
+                    <div style="height: 4vh;font-size: 2.1vh;color: rgb(157, 176, 183);">密码</div>
+                    
+                    <el-form-item prop="password">
+                    <el-input @keyup.enter.native="login" prefix-icon="el-icon-lock" v-model="form.password" type="password" ></el-input>
+                    </el-form-item>
+                    <el-form-item class="btn" style="margin-top: 4vh;">
+                    <el-button type="primary" round class="login-btn" @click="login">SIGN IN</el-button>
+                    </el-form-item>
+                </el-form>
+            </div>
+        </div>
+        <div class="ddd" style="float: left;width: 20vw;height: 80vh;text-align: center;">
+        <div style="margin:3vh;color: white;">
+            <div style="height: 7vh;font-size: 3.2vh;margin-top: 8vh;">Second-hand trading platform</div>
+            <div style="height: 7vh;font-size: 3vh;margin-top: 8vh;">New here?</div>
+            <div style="font-size: 2vh;">Then click the sign up button to join us!</div>
+        </div>
+        <div>
+            <el-button style="margin-top: 25vh;border: white solid 2px;color: white;background-color: transparent;"
+             round @click="register">SIGN UP</el-button>
+        </div>
     </div>
-  </div>
+    </div>
+    
+
 </div>
 </template>
 
 <script>
-import {mapActions}from "vuex";
-import jsonp from "jsonp";
 
-import EventBus from '../../components/event-bus'
+//这里可以导入其他文件（比如：组件，工具 js，第三方插件 js，json文件，图片文件等等）
+//例如：import 《组件名称》 from '《组件路径》';
+// $('.message a').click(function(){
+//    $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
+// });
 export default {
 name: "Login",
   data() {
@@ -47,7 +60,6 @@ name: "Login",
           const {data:res}=await this.$http.post('/api/cloud-member/member/getName/'+this.form.username,{
             username:this.form.username
           })
-          console.log(res);
           if(res.code==='A00101'){
             return callback(new Error("该用户名不存在"))
           }else{
@@ -77,22 +89,8 @@ name: "Login",
     }
   },
   created() {
-    this.getAddress();
   },
   methods:{
-  getAddress(){
-    jsonp(
-        'https://api.map.baidu.com/location/ip?ak=KPOPrTmKSUQSuPCUpu6TpSD5KgOjcUvh&&coor=bd09ll',
-        null,
-        (err, data) => {
-          if (err) {
-            console.log(err);
-          } else {
-           this.form.address=data.content.address;
-          }
-        }
-    );
-  },
     login(){
       //对整个表单进行验证
       this.$refs.loginFromRef.validate(vali=>{
@@ -106,9 +104,8 @@ name: "Login",
               if(res.data.code=='000000'){
                 this.$notify.success({
                    title:"登录成功",
-                   message:`欢迎回来~ 亲爱的${res.data.data.member.nickname==undefined?res.data.data.member.username:res.data.data.member.nickname}`
+                   message:`亲爱的${res.data.data.member.nickname==undefined?res.data.data.member.username:res.data.data.member.nickname} 欢迎来到二手交易平台~ `
                  });
-                EventBus.$emit("login",res.data.data.id)
                 //把登陆信息存储到本地
                 sessionStorage.setItem("user",JSON.stringify(res.data.data.member));
                 sessionStorage.setItem("token",JSON.stringify(res.data.data.token));
@@ -116,13 +113,8 @@ name: "Login",
                 sessionStorage.setItem("user_id",res.data.data.id);
                 this.$store.commit("saveUserName",res.data.data.member.username);
                 //登陆信息保存到vuex里
-
                   //进行跳转至首页
-                 if(res.data.data.member.username=="admin"){
-                   this.$router.push("/homepage");
-                 }else{
-                   this.$router.push("/home");
-                 }
+                this.$router.push("/home");
               }else{
                 return this.$notify({
                    title:res.data.msg,
@@ -141,75 +133,56 @@ name: "Login",
   }
 }
 </script>
-
 <style scoped>
-*{
-  box-sizing: border-box;
+
+.floatBox {
+    width: 60vw;
+    height: 80vh;
+    /* background-color: rgb(255, 255, 255);    x=0代表移回原位置 */
+    background-image: url("https://ts1.cn.mm.bing.net/th/id/R-C.6dfa47b05ddd9d86468cdd8f5a1e4272?rik=%2bdcjoX7ul4qbYg&riu=http%3a%2f%2fwebimg.finebornchina.cn%2foriginal%2fuploads%2fallimg%2f150126%2f1-15012613014T24.jpg&ehk=2CVmOBnG5AgwDvYxNEcKH1zmbofjNx72tWi4JRiWp5M%3d&risl=&pid=ImgRaw&r=0");
+    /* transform: translateX(0); */
+    /* 移回也需要0.4s时间过渡 */
+    /* transition: transform 0.4s; */
+    margin-top: 15vh;
+    margin-left: 15vw;
+    float: left;
 }
-.wave{
-  position: fixed;
-  height: 100%;
-  left: 0;
-  bottom: 0;
-  z-index: -1;
+ 
+/* hover样式 */
+.sss:hover {
+    /* x=-10px代表左移10px */
+    translate: translateX(-10vw);
+    /* 0.4s完成transform移动效果*/
+    translate: transform 0.4s;
+ 
 }
-.login-container{
-  width: 100vw;
-  height: 70vh;
-  display: flex;
-  align-items: center;
+.sign-in{
+    /* margin-top: 20vh; */
+    margin-left: 10vw;
 }
-.login-container .img{
-  width: 600px;
-}
-.login-container .login-box{
-  width: 450px;
-  height: 300px;
-  background-color: white;
-  border-radius: 3px;
-  position: absolute;
-  left:60%;
-  top:30%;
-  box-shadow: 0px 0px 10px #ddd;
-}
-.avater-box{
-  width: 100px;
-  height: 100px;
-  position: absolute;
-  left: 50%;
-  transform: translate(-40%,-50%);
-}
-.avater-box img{
-  width: 100%;
-  height: 100%;
+.sss{
+    width: 40vw;
+    height: 80vh;
+    background-color: rgb(255, 255, 255);
+    float: left;
 }
 .login-form{
   position: absolute;
-  bottom: 0;
-  width: 100%;
-  padding: 0 20px;
+  width: 20vw;
+  padding: 0 15px;
   box-sizing: border-box;
+  text-align: center;
 }
-p{
-  text-align: right;
-  color:#999;
-  font-size:10px;
-  cursor: pointer;
-  transition: .3s;
+.ddd{
+    background-size: 20vw 80vh;
+    translate: transform 0.4s;
+    background-color: rgba(0, 0, 0, 0.5);
 }
-p:hover{
-  color: #38d39f;
-}
-.btn{
-  display: flex;
-  justify-content: center;
-  margin-right: 50px;
-}
-.el-button.is-round {
-  border-radius: 20px;
-  padding: 12px 50px;
-}
-.el-button+.el-button {
-  margin-left: 30px;
+.ddd:hover{
+    
+    /* x=-10px代表左移10px */
+    translate: translateX(-30vw);
+    /* 0.4s完成transform移动效果*/
+    translate: transform 0.4s;
 }
 </style>

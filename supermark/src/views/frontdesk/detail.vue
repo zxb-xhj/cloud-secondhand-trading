@@ -1,7 +1,11 @@
 <template>
   <div id="detail" v-loading="listLoading">
-    <a style="margin-left: 3rem;" v-if="fanhui" href="javascript:history.back (-1)" class="el-dropdown-link">
+    
+    <a  style="margin-left: 3.5vw;float: left;margin-top: -3.7rem;" class="el-dropdown-link" href="javascript:history.back (-1)">
       <i class="el-icon-arrow-left"></i>返回
+    </a>
+    <a style="margin-left: 3rem;" v-if="fanhui" href="javascript:history.back (-1)" class="el-dropdown-link">
+    
     </a>
     <!--    左右布局-->
     <el-row>
@@ -11,7 +15,7 @@
           <el-col >
             <div style="text-align: center;margin-bottom: 5%;font-size: 3.3vh;" class="grid-content bg-purple title">{{ title }}</div>
           </el-col>
-          <img :src="commodityImage" style="width: 23vw;height: 45vh;margin-left: 6vw" alt="">
+          <img :src="commodityImage" style="width: 23vw;height: 47vh;margin-left: 6vw" alt="">
           <div style="margin-top: 3.2vh;margin-left: 5vw;">
             <div id="info" class="info" style="height: 10vh;width: 25vw;text-align: center;border-radius: 10px;margin-left: 0.3vw;border: #ffd69d solid 1px;">
                 <!-- <router-link :to="{ name: 'Message', params: { id: sellerId,seller:seller }}"> -->
@@ -87,7 +91,7 @@
         </div>
       </el-col>
     </el-row>
-    <div style="clear: left;width: 100%;margin-top: 5vh;">
+    <div style="clear: left;width: 100%;margin-top: 5vh;" v-loading="listLoading1">
       <div style="text-align: center;background-color: rgb(238, 238, 238);height: 6vh;
       margin-left: 10vw;margin-right: 10vw;font-size: 2.5vh;border-radius: 10px;">
       <div style="width: 100%;height: 1.35vh;"></div>
@@ -103,7 +107,7 @@
                 font-size: 2.5vh;margin-top: 0.1vh;background-color: rgb(72, 113, 247);color: white;"/>
                 </div>
             </div>
-      <div v-if="messages" v-loading="listLoading">
+      <div v-if="messages">
         <div v-for="(message,index) in messages" :key="index" style="width: 100%;">
           <div style="width: 100%;height: 1vh;clear: left;"></div>
           <div style="margin-left: 15vw;width: 70%;clear: left;margin-top: 1.5vh;">
@@ -115,7 +119,7 @@
               <div style="font-size: 1.7vh;color: #787878;margin-top: 0.5vh;">{{message.memberName}} · <span style="font-size: 1.5vh;">{{ message.createTime }}</span></div>
               <div style="font-size: 2vh;"><span v-if="message.parentName" style="font-size: 1.8vh;color: #d1d1d1;">回复:{{ message.parentName }}({{ message.parentContent }})</span>  {{message.content}}</div>
               <div @click="deleteMessage(message.id,index)" v-if="message.memberName==name" class="el-dropdown-link" style="font-size: 1.5vh;margin-top: 0.5vh;">删除</div>
-              <div @click="huifu(message.id,message.memberName)" v-if="message.memberName!=name" class="el-dropdown-link" style="font-size: 1.5vh;margin-top: 0.5vh;">回复</div>
+              <div @click="huifu(message.id,message.memberName,message.content)" v-if="message.memberName!=name" class="el-dropdown-link" style="font-size: 1.5vh;margin-top: 0.5vh;">回复</div>
               <!-- <span v-if="true" class="el-dropdown-link" @click="bdisplayNone" style="font-size: 1.7vh;">
                 查看全部回复<i v-if="!display" class="el-icon-caret-bottom el-icon--right"></i>
                 <i v-if="display" class="el-icon-caret-top el-icon--right"></i>
@@ -127,7 +131,7 @@
         <div style="height: 4vh;width: 50vw;clear: left;"></div>
       </div>
       
-      <div v-if="messages.length==0" style="font-size: 2vh;text-align: center;margin-top: 8vh;margin-bottom: 8vh;height: 10vh;">暂无评论</div>
+      <div v-loading="listLoading1" v-if="messages.length==0" style="font-size: 2vh;text-align: center;margin-top: 8vh;margin-bottom: 8vh;height: 10vh;">暂无评论</div>
     </div>
     <el-dialog :title="goodsFormTitle" :visible.sync="goodsFormShow">
       <el-form label-width="80px">
@@ -184,7 +188,9 @@ export default {
       display: false,
       goodsFormShow: false,
       goodsFormTitle: '',
-      content: ''
+      content: '',
+      listLoading1: true,
+      xiaoxi:''
     }
   },
   components: {
@@ -199,6 +205,7 @@ export default {
   // },
   // 通过路由获取商品id
   activated() {
+    this.name= sessionStorage.getItem('nickname')==null?sessionStorage.getItem('username'):sessionStorage.getItem('nickname')
     this.xianshi = sessionStorage.getItem('token')
     if (this.$route.params.gid != undefined) {
       this.gid = this.$route.params.gid;
@@ -225,10 +232,11 @@ export default {
       this.goodsFormShow = false;
       this.goodsFormTitle = ''
     },
-    huifu(id,name){
+    huifu(id,name,content){
       this.message = ''
       this.goodsFormShow = true;
-      this.goodsFormTitle = "回复："+name
+      this.goodsFormTitle = "回复："+name+"("+content+")"
+      this.xiaoxi = content
       this.parentId = id
     },
     deleteMessage(id,index){
@@ -236,11 +244,12 @@ export default {
         console.log(res)
         this.messages.splice(index,1)
         this.$message.success("删除成功")
+        // this.getMessage(this.gid)
       })
     },
     getMessage(id){
+      this.messages = [];
       this.$http.get("/api/cloud-message/commentReply/" + id).then(res => {
-
         const messages = res.data.data
         messages.forEach(message=>{
           const now = new Date().getTime();
@@ -263,6 +272,7 @@ export default {
           }
         })
         this.messages = messages;
+        this.listLoading1 = false
       })
     },
     addMessage(){
@@ -276,11 +286,14 @@ export default {
           memberId:memberId,content: message,goodsId: this.gid,parentId: this.parentId
         }
         ).then(res => {
+          console.log(res)
           this.messages.push({id: res.data.data.id,memberName: name,content:res.data.data.content,
-            createTime: "刚刚",parentId: this.parentId,parentName: res.data.data.parentName})
+            createTime: "刚刚",parentId: this.parentId,parentName: res.data.data.parentName,parentContent:this.xiaoxi})
           this.message = ''
           this.content = ''
           this.parentId = ''
+          this.xiaoxi = ''
+          this.goodsFormShow = false;
         })
       }
     },

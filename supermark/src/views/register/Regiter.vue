@@ -1,32 +1,60 @@
 <template>
-<div class="box">
-
-<div class="register-container">
-  <div class="register-box">
-  <h2>用户注册</h2>
-  <el-form ref="rulForm" label-width="100px" status-icon :model="ruleForm" class="demo-ruleForm" :rules="rules">
-    <el-form-item label="用户名:"  prop="username">
-      <el-input  v-model="ruleForm.username" auto-complete="off"></el-input>
-    </el-form-item>
-    <el-form-item label="密码:" prop="pass">
-      <el-input type="password" v-model="ruleForm.pass" auto-complete="off"></el-input>
-    </el-form-item>
-    <el-form-item label="确认密码:" prop="checkPass">
-      <el-input type="password"  v-model="ruleForm.checkPass" auto-complete="off"></el-input>
-    </el-form-item>
-    <p class="register" @click="login">已有账号？去登录</p>
-    <el-form-item class="btn">
-      <el-button type="success" @click="submitForm()" >注册</el-button>
-      <el-button type="info" @click="resetForm()">重置</el-button>
-    </el-form-item>
-  </el-form>
-  </div>
-</div>
-</div>
-</template>
-
-<script>
-export default {
+    <div style="background-color: rgb(246, 246, 246);width: 100vw;height: 100vh;">
+        <a  style="margin-left: 3.5vw;float: left;margin-top: 8vh;" class="el-dropdown-link" href="javascript:history.back (-1)">
+          <i class="el-icon-arrow-left"></i>返回
+        </a>
+        <div class="floatBox">
+            <div class="ddd" style="float: left;width: 20vw;height: 80vh;text-align: center;">
+                <div style="margin:3vh;color: white;">
+                    <div style="height: 7vh;font-size: 3.2vh;margin-top: 8vh;">Second-hand trading platform</div>
+                    <div style="height: 7vh;font-size: 3vh;margin-top: 8vh;">Got an account?</div>
+                    <div style="font-size: 2vh;">If you already has an account, just sign in. We've missed you!</div>
+                </div>
+                <div>
+                    <el-button style="margin-top: 25vh;border: white solid 2px;color: white;background-color: transparent;"
+                    round @click="login">SIGN IN</el-button>
+                </div>
+            </div>
+            <div class="sss">
+                <div class="sign-in">
+                    <div style="height: 16vh;"></div>
+                    <el-form ref="rulForm" class="login-form"  :model="ruleForm" :rules="rules">
+                    <div style="font-size: 2.8vh;text-align: center;height: 8vh;">Please register</div>
+                        <div style="height: 4vh;font-size: 2.1vh;color: rgb(157, 176, 183);">用户</div>
+                        <el-form-item prop="username">
+                        <el-input prefix-icon="el-icon-user" v-model="ruleForm.username"></el-input>
+                        </el-form-item>
+                        <div style="height: 4vh;font-size: 2.1vh;color: rgb(157, 176, 183);">密码</div>
+                        
+                        <el-form-item prop="pass">
+                        <el-input prefix-icon="el-icon-lock" v-model="ruleForm.pass" type="password" ></el-input>
+                        </el-form-item>
+                        <div style="height: 4vh;font-size: 2.1vh;color: rgb(157, 176, 183);">确认密码</div>
+                        
+                        <el-form-item prop="checkPass">
+                        <el-input @keyup.enter.native="login" prefix-icon="el-icon-lock" v-model="ruleForm.checkPass" type="password" ></el-input>
+                        </el-form-item>
+                        <el-form-item class="btn" style="margin-top: 4vh;">
+                        <el-button type="success" round class="login-btn" @click="submitForm()">SIGN UP</el-button>
+                        </el-form-item>
+                    </el-form>
+                </div>
+            </div>
+            
+        </div>
+        
+    
+    </div>
+    </template>
+    
+    <script>
+    
+    //这里可以导入其他文件（比如：组件，工具 js，第三方插件 js，json文件，图片文件等等）
+    //例如：import 《组件名称》 from '《组件路径》';
+    // $('.message a').click(function(){
+    //    $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
+    // });
+    export default {
   name: "Regiter",
   data() {
     var validatePass = (rule, value, callback) => {
@@ -35,6 +63,17 @@ export default {
       } else {
         if (this.ruleForm.checkPass !== '') {
           this.$refs.rulForm.validateField('checkPass');
+        }
+        // 检查是否只包含英文字母、数字和符号
+        if (!/^[a-zA-Z0-9\u4e00-\u9fa5]+$/.test(value)) {
+          callback(new Error("只能包含英文、数字和符号"));
+          return;
+        }
+
+        // 检查长度是否在3-16之间
+        if (value.length < 3 || value.length > 16) {
+          callback(new Error("长度为3-16个字符"));
+          return;
         }
         callback();
       }
@@ -62,6 +101,24 @@ export default {
           if(res.code=='A00104'){
             return callback(new Error("该用户名已被注册"))
           }else{
+            // 检查是否以英文字母开头
+            if (!/^[a-zA-Z]/.test(value)) {
+              callback(new Error("必须以英文字母开头"));
+              return;
+            }
+
+            // 检查长度是否在3-18之间
+            if (value.length < 3 || value.length > 18) {
+              callback(new Error("长度为3-5个字符"));
+              return;
+            }
+
+            // 检查是否只包含英文字母和数字
+            if (!/^[a-zA-Z0-9]+$/.test(value)) {
+              callback(new Error("只能包含英文和数字"));
+              return;
+            }
+
             callback();
           }
         }
@@ -121,56 +178,57 @@ export default {
   }
 
 }
-</script>
-
-<style scoped>
-html,body{
-  background: #f9f9f9;
-  width: 100%;
-  height: 100%;
-}
-.box{
-  height: 100%;
-  position: relative;
-
-}
-.register-box{
-  margin:100px auto;
-}
-.register-container{
-  width:1054px;
-  height: 600px;
-  margin:10px auto;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  background-color: white;
-  box-shadow: 0px 0px 10px #ddd;
-}
-.register-container h2{
-padding-left: 61px;
-  margin:30px 0;
-  text-align: center;
-  text-transform: uppercase;
-}
-
-.demo-ruleForm{
-  width: 500px;
-  padding: 0 20px;
-  box-sizing: border-box;
-}
- .register-container .btn{
-  margin-left:77px;
-}
-p{
-  text-align: right;
-  color:#999;
-  font-size:10px;
-  cursor: pointer;
-  transition: .3s;
-}
-p:hover{
-  color: #38d39f;
-}
-
-</style>
+    </script>
+    <style scoped>
+    
+    .floatBox {
+        width: 60vw;
+        height: 80vh;
+        /* background-color: rgb(255, 255, 255);    x=0代表移回原位置 */
+        background-image: url("https://ts1.cn.mm.bing.net/th/id/R-C.6dfa47b05ddd9d86468cdd8f5a1e4272?rik=%2bdcjoX7ul4qbYg&riu=http%3a%2f%2fwebimg.finebornchina.cn%2foriginal%2fuploads%2fallimg%2f150126%2f1-15012613014T24.jpg&ehk=2CVmOBnG5AgwDvYxNEcKH1zmbofjNx72tWi4JRiWp5M%3d&risl=&pid=ImgRaw&r=0");
+        /* transform: translateX(0); */
+        /* 移回也需要0.4s时间过渡 */
+        /* transition: transform 0.4s; */
+        margin-top: 15vh;
+        margin-left: 15vw;
+        float: left;
+    }
+     
+    /* hover样式 */
+    .sss:hover {
+        /* x=-10px代表左移10px */
+        translate: translateX(-10vw);
+        /* 0.4s完成transform移动效果*/
+        translate: transform 0.4s;
+     
+    }
+    .sign-in{
+        /* margin-top: 20vh; */
+        margin-left: 10vw;
+    }
+    .sss{
+        width: 40vw;
+        height: 80vh;
+        background-color: rgb(255, 255, 255);
+        float: left;
+    }
+    .login-form{
+      position: absolute;
+      width: 20vw;
+      padding: 0 15px;
+      box-sizing: border-box;
+      text-align: center;
+    }
+    .ddd{
+        background-size: 20vw 80vh;
+        translate: transform 0.4s;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+    .ddd:hover{
+        
+        /* x=-10px代表左移10px */
+        translate: translateX(-30vw);
+        /* 0.4s完成transform移动效果*/
+        translate: transform 0.4s;
+    }
+    </style>

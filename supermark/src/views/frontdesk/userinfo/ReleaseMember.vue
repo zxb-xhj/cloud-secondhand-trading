@@ -41,7 +41,7 @@
                 </div>
                 <div>
                 </div>
-                <div style="float: left;margin-left: 30px;width: 77vw;">
+                <div style="float: left;margin-left: 30px;width: 78vw;">
                     <template>
                         <el-table v-loading="listLoading" :row-style="{ height: '45px' }" :cell-style="{ padding: '0px' }"
                             :data="List" element-loading-text="Loading" border fit highlight-current-row>
@@ -166,7 +166,6 @@ export default {
             this.$router.push({ path: "/checkstand", query: { 'orderSn': orderSn } });
         },
         save() {
-            console.log(this.list[this.index])
             if (this.addr != 0) {
                 this.$http.post("/api/cloud-order/orderaddr/updates", { id: this.goodsForm.orderAddr.id, orderAddr: this.list[this.index] }).then(res => {
                     this.goodsFormShow = false;
@@ -182,14 +181,11 @@ export default {
         getList() {
             this.listLoading = true
             var memberId = JSON.parse(sessionStorage.getItem("user_id"));
-            console.log(this.orderId)
             this.$http.get("/api/cloud-order/orderaddr/getGoods?goodsId=" + this.goodsId
             ).then(res => {
                 this.goodsForm = res.data.data.goodsDTO
-                console.log(this.goodsForm.name)
                 this.List = res.data.data.orderInfoVos
                 this.images = res.data.data.goodsDTO.images
-                console.log(this.List)
                 this.images.forEach(image => {
                     this.image.push(image.url)
                 });
@@ -213,7 +209,6 @@ export default {
             //     message: '复制成功',
             //     type: 'success'
             // });
-            console.log(order)
             this.order = "姓名：" + order.consignee + "  地址：" + order.province + " " + order.city + " " + order.area +
                 "  详细地址" + order.addr + " 电话号码：" + order.mobile
             //创建input标签

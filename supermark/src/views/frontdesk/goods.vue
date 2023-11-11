@@ -28,7 +28,7 @@
       <!-- 主要内容区 -->
       <div class="box-head" style="margin-left: 7%;margin-right: 2%;background-color: #F5F5F5;">
 
-        <div style="height: 38.3rem;overflow:auto">
+        <div style="overflow:auto">
           <MyList style="background-color: #F5F5F5;" :list="product" v-if="product.length > 0"></MyList>
           <div v-else class="none-product">抱歉没有找到相关的商品，请看看其他的商品</div>
         </div>

@@ -314,7 +314,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
      */
     @Transactional
     @Override
-    @CacheEvict(value = "cloud-goods:releaseGoods",key = "#req.seller_id")
+    @CacheEvict(value = "cloud-goods:releaseGoods",key = "#req.sellerId")
     public void saveGoodsInfo(GoodsSaveTestReq req) {
         Goods goods = new Goods();
         BeanUtils.copyProperties(req,goods);
