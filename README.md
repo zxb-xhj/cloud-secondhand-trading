@@ -7,10 +7,14 @@
 首页  --必须登录才能对商品进行发布和购买
 ![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/26654026-d66e-47c7-b350-f4828e5edc56)
 ![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/3d2eb216-f6b6-4bb3-b383-1aebc80c0bf9)
+登录
+![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/7484fd85-8309-4d7f-b72d-e1215aa6991a)
+注册
+![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/1d3bb6aa-f275-4c7a-9789-a0c7afda3843)
 商品展示  
 ![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/ef8e6072-c869-47c8-afe5-4c8ba91926d0)
-商品信息  --展示商品的详细信息和商家的联系方式
-![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/2c6a3c84-9f83-4645-a330-4d6eedb4227d)
+商品信息  --展示商品的详细信息和商家，点击聊一聊和商家聊天
+![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/8fcf2261-d532-4d2a-b744-0e72434a8de5)
 商品评论
 ![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/67433768-5dce-4eea-ab54-aecbfbaad604)
 聊天服务
@@ -31,6 +35,8 @@
 订单页面  --查看自己所有订单和订单详情
 ![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/63800969-baef-47db-8aae-960742329e63)
 ![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/c30baa4e-7e1f-44a0-b748-d81700ee912e)
-
-
+管理端部分页面展示
+![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/4dabac00-61dc-476e-9da1-b903d550b8f3)
+![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/42a15c3e-5561-4153-aa8d-203865899cd9)
+![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/c58b01cb-4231-4f15-ae8e-af5b05daa203)
 
