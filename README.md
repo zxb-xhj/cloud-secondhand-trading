@@ -6,7 +6,8 @@
 
 首页  --必须登录才能对商品进行发布和购买
 ![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/26654026-d66e-47c7-b350-f4828e5edc56)
-![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/3d2eb216-f6b6-4bb3-b383-1aebc80c0bf9)
+![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/219f4970-5ccf-40e7-85f9-7487adfdbe0e)
+
 登录
 ![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/7484fd85-8309-4d7f-b72d-e1215aa6991a)
 注册
