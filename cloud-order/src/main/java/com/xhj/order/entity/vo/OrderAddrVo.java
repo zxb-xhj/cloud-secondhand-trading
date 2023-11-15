@@ -26,4 +26,10 @@ public class OrderAddrVo {
     private MemberAddrDTO memberAddrDTO;
     private String attributeNames;
 
+    /**
+     * 0 重复提交
+     * 1 提交成功
+     * 2 提交失败
+     */
+    private Integer code;
 }

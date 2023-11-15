@@ -46,5 +46,40 @@ public class PrivateMessageController {
         return R.ok(privateMessage);
     }
 
+    /**
+     * 更新未读消息
+     * @param
+     * @return
+     */
+    @GetMapping("/updateMessage/{senderId}/{receiverId}")
+    public R updateMessage(@PathVariable Integer senderId,
+                           @PathVariable Integer receiverId){
+        privateMessageService.updateMessage(senderId,receiverId);
+        return R.ok();
+    }
+
+
+    public static void main(String[] args) {
+        int sum = 0;
+        for (int i = 1; i <= 100; i++) {
+            sum+=i;
+        }
+        System.out.println(sum);
+        
+        int[] a = {21,21,12,32,45,12,32,456,778,87};
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < a.length; j++) {
+                if (a[i]<a[j]){
+                    int c = a[i];
+                    a[i] = a[j];
+                    a[j] = c;
+                }
+            }
+        }
+        for (int i : a) {
+            System.out.println(i);
+        }
+    }
+
 }
 

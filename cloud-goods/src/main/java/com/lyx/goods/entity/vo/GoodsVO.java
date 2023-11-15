@@ -21,7 +21,7 @@ import java.util.List;
  */
 @Data
 public class GoodsVO implements Serializable {
-
+//    private static final long serialVersionUID = 1L;
 
      /**
        * 编号
@@ -113,6 +113,10 @@ public class GoodsVO implements Serializable {
      * 手机号码
      */
     private String mobile;
+    /**
+     * 令牌
+     */
+    private String token;
 
 
 }

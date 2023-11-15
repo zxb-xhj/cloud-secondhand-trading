@@ -12,6 +12,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lyx.common.base.entity.dto.*;
 import com.lyx.common.base.result.R;
 import com.lyx.common.mp.utils.PageUtils;
+import com.xhj.order.constant.OrderConstant;
 import com.xhj.order.entity.Order;
 import com.xhj.order.entity.OrderAddr;
 import com.xhj.order.entity.Pay;
@@ -34,6 +35,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -216,6 +218,18 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper,Order> implements 
     @Transactional
     @Override
     public OrderAddrVo getOrder(OrderReq req, HttpServletRequest request) {
+        // 解析token防止重复提交
+        // redsi原子性 0 令牌校验失败  1 成功
+        String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+        String orderToken = req.getToken();
+        Long aLong = redisTemplate.execute(new DefaultRedisScript<Long>(script, Long.class),
+                Arrays.asList(OrderConstant.USER_ORDER_TOKEN_PREFIX + req.getToken()), orderToken);
+        // 校验失败
+        OrderAddrVo orderAddrVo = new OrderAddrVo();
+        if (aLong==0L){
+            orderAddrVo.setCode(0);
+            return orderAddrVo;
+        }
         // 生成订单号
         long id = IdWorker.getId();
         log.info("id{}",id);
@@ -228,7 +242,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper,Order> implements 
                 // 扣除库存
                 storageFeignService.updateStorage(req.getGoodsId());
                 R byId = memberFeignService.getById(req.getAddrId());
-                OrderAddrVo orderAddrVo = new OrderAddrVo();
                 if (byId.getData()!=null){
                     String s = JSONObject.toJSONString(byId.getData());
                     OrderAddrMemberReq orderAddrMemberReq = JSON.parseObject(s, OrderAddrMemberReq.class);
@@ -272,13 +285,16 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper,Order> implements 
                 orderAddrVo.setGoodsId(req.getGoodsId());
                 // 订单创建成功 发送消息给rabbitMq
                 rabbitTemplate.convertAndSend("secondhandOrder-event-exchange","secondhandOrder-create-order",orderAddrVo);
+                orderAddrVo.setCode(1);
                 return orderAddrVo;
             }catch (Exception e){
-
+                orderAddrVo.setCode(2);
                 semaphore.release();
+                return orderAddrVo;
             }
         }
-        return null;
+        orderAddrVo.setCode(2);
+        return orderAddrVo;
     }
 
     /**

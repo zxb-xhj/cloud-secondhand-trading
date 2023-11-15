@@ -1,6 +1,7 @@
 package com.xhj.message.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xhj.message.entity.PrivateMessage;
 import com.xhj.message.entity.vo.PrivateMessageListVO;
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -77,7 +79,18 @@ public class PrivateMessageServiceImpl extends ServiceImpl<PrivateMessageMapper,
         // 远程调用获取用户名
         if (list.size()>0){
             List<Map<String,Object>> map = memberFiegnSerivce.getMessageUserName(list);
-            privateMessageListVO.setList(map);
+            // 查询每个用户的未读消息
+            List<Map<String, Object>> maps = map.stream().map(item -> {
+                int i = 0;
+                for (PrivateMessage privateMessage : privateMessages) {
+                    if (privateMessage.getSenderId().equals(Integer.parseInt(item.get("id") + "")) && !privateMessage.getIsRead()) {
+                        i++;
+                    }
+                }
+                item.put("readCount", i);
+                return item;
+            }).collect(Collectors.toList());
+            privateMessageListVO.setList(maps);
         }
         return privateMessageListVO;
     }
@@ -106,6 +119,20 @@ public class PrivateMessageServiceImpl extends ServiceImpl<PrivateMessageMapper,
         return privateMessage;
     }
 
+    /**
+     * 更新未读消息
+     * @param senderId
+     * @param receiverId
+     */
+    @Override
+    public void updateMessage(Integer senderId, Integer receiverId) {
+        LambdaUpdateWrapper<PrivateMessage> wrapper = Wrappers.lambdaUpdate();
+        wrapper.eq(PrivateMessage::getSenderId,senderId)
+                .eq(PrivateMessage::getReceiverId,receiverId)
+                .set(PrivateMessage::getIsRead,1);
+        update(wrapper);
+    }
+
     public static void main(String[] args) {
         String name = "2001:xhfffffj:你好";
         System.out.println(name.substring(0,name.indexOf(":")));
@@ -114,4 +141,5 @@ public class PrivateMessageServiceImpl extends ServiceImpl<PrivateMessageMapper,
         System.out.println(name.substring(name.indexOf(":",name.indexOf(":")+1)+1));
 //        System.out.println(name.substring(0,name.indexOf(":")));
     }
+
 }

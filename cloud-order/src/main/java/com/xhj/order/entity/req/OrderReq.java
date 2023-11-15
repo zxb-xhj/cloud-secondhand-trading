@@ -16,4 +16,5 @@ public class OrderReq {
     private Long addrId;
     private BigDecimal price;
     private String memberName;
+    private String token;
 }

@@ -36,9 +36,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -207,8 +209,9 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
                         GoodsDetails goodsDetails = detailsService.lambdaQuery().eq(GoodsDetails::getGoodsId, id).one();
                         vo.setDetails(goodsDetails);
                     }, executor);
-                    // 远程调用查询库存
+                    // 库存
                     CompletableFuture<Void> runAsync3 = CompletableFuture.runAsync(() -> {
+
 //                        Integer residueGoods = storageFeignService.residueGoodsId(id);
 //                        Integer residue = storageFeignService.residue(id);
 //                        if (residue != null) {
@@ -252,6 +255,9 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         // 设置商品详情
         GoodsDetails goodsDetails = detailsService.lambdaQuery().eq(GoodsDetails::getGoodsId, id).one();
         goodsVO.setDetails(goodsDetails);
+        String s = UUID.randomUUID().toString().replace("-","");
+        redisTemplate.opsForValue().set("order:token:"+s,s,30, TimeUnit.MINUTES);
+        goodsVO.setToken(s);
         return goodsVO;
     }
 

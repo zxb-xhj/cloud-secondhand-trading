@@ -27,4 +27,11 @@ public interface PrivateMessageService extends IService<PrivateMessage> {
      * @return
      */
     PrivateMessage addMessage(Map<String, Object> map);
+
+    /**
+     * 更新未读消息
+     * @param senderId
+     * @param receiverId
+     */
+    void updateMessage(Integer senderId, Integer receiverId);
 }

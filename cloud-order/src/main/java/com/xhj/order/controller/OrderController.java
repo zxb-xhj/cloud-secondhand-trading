@@ -111,7 +111,7 @@ public class OrderController {
     }
 
     /**
-     * 订单准备
+     * 订单准备  立即购买
      */
     @PostMapping("/addOrder")
     public R addOrder(@RequestBody OrderReq req, HttpServletRequest request){
