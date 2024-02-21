@@ -11,10 +11,7 @@ import com.lyx.member.entity.req.MemberLoginReq;
 import com.lyx.member.entity.req.MemberListPageReq;
 import com.lyx.member.entity.req.MemberPassReq;
 import com.lyx.member.entity.req.SaveMemberReq;
-import com.lyx.member.entity.vo.AreaVo;
-import com.lyx.member.entity.vo.MemberInfoVO;
-import com.lyx.member.entity.vo.MemberLoginVo;
-import com.lyx.member.entity.vo.MemberVO;
+import com.lyx.member.entity.vo.*;
 import com.lyx.member.service.AreaService;
 import com.lyx.member.service.MemberService;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -22,6 +19,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import utils.ExcelUtils;
 
 import javax.annotation.Resource;
@@ -40,7 +38,7 @@ import java.util.Map;
  *  前端控制器
  * </p>
  *
- * @author 黎勇炫
+ * @author xhj
  * @since 2023-03-25 09:39:17
  */
 @RestController
@@ -81,6 +79,19 @@ public class MemberController {
     public R getList(@RequestBody List<Long> ids){
         List<Member> members = memberService.getList(ids);
         return R.ok(members);
+    }
+
+    /**
+     * 文件上传
+     */
+    @PostMapping("/file")
+    public R file(@RequestParam("file") MultipartFile file){
+        try{
+            memberService.getFile(file);
+        }catch (Exception e){
+            return R.failed();
+        }
+        return R.ok();
     }
     /**
      * 会员登录
@@ -173,6 +184,15 @@ public class MemberController {
         return R.ok(count);
     }
 
+    /**
+     * 根据商品id查询 用户id 查询用户学校和地址
+     */
+    @GetMapping("/getSchool/{id}")
+    public R getSchool(@PathVariable Long id){
+        SchoolVO school = memberService.getSchool(id);
+        return R.ok(school);
+    }
+
      /**
        * 更新会员账号启用状态
        */
@@ -224,7 +244,7 @@ public class MemberController {
             Member member = new Member();
             member.setUsername(RandomStringUtils.randomAlphabetic(10));
             member.setNickname(RandomStringUtils.randomAlphabetic(10));
-            member.setBirth(LocalDate.now());
+//            member.setBirth(LocalDate.now());
             member.setPassword("123456");
             member.setMobile("15673225896");
             member.setEmail("1677685900@qq.com");

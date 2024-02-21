@@ -52,9 +52,13 @@ public class Order implements Serializable {
      */
     private BigDecimal totalAmount;
     /**
-     * 应付总额
+     * 商品总额
      */
     private BigDecimal payAmount;
+    /**
+     * 快递费
+     */
+    private BigDecimal footprint;
     /**
      * 支付方式【1->支付宝；2->微信；3->银联； 4->货到付款；】
      */

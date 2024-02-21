@@ -8,7 +8,7 @@ spring:
     nacos:
       # 注册中心
       discovery:
-        server-addr: 127.0.0.1:8848
+        server-addr: 121.37.208.253:8859
       # 配置中心
       config:
         server-addr: ${spring.cloud.nacos.discovery.server-addr}
@@ -21,6 +21,16 @@ spring:
     redis:
       cache-null-values: true
       use-key-prefix: true
-logging:
-  level:
-    spring.: info
+#logging:
+#  level:
+#    spring.: info
+
+com:
+  name: zhangxinbao
+
+#配置线程池
+xhj:
+  thread:
+    coreSize: 20
+    maxSize: 200
+    keepAliveTime: 10

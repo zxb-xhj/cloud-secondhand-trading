@@ -5,7 +5,7 @@ import com.lyx.admin.ser.entity.SysRolePermission;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * @author： 黎勇炫
+ * @author： xhj
  */
 @Mapper
 public interface SysRolePermissionMapper extends BaseMapper<SysRolePermission> {

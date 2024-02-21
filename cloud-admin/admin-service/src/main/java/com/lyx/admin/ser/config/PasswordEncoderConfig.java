@@ -6,7 +6,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
- * @author 黎勇炫
+ * @author xhj
  * @date 2022年10月27日 22:56
  */
 @Configuration

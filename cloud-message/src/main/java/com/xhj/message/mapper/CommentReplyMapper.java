@@ -11,7 +11,7 @@ import java.util.List;
  * 评论回复表 Mapper 接口
  * </p>
  *
- * @author 黎勇炫
+ * @author xhj
  * @since 2023-04-17 03:06:00
  */
 @Mapper

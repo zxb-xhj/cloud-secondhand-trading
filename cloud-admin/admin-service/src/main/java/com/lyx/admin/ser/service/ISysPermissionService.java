@@ -11,7 +11,7 @@ import com.lyx.admin.ser.entity.vo.SysServiceVO;
 import java.util.List;
 
 /**
- * @author 黎勇炫
+ * @author xhj
  * @date 2022年10月10日 17:21
  */
 public interface ISysPermissionService extends IService<SysPermission> {

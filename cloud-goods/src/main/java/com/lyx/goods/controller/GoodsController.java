@@ -35,7 +35,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  *  前端控制器
  * </p>
  *
- * @author 黎勇炫
+ * @author xhj
  * @since 2023-03-31 11:16:28
  */
 @RestController
@@ -152,7 +152,7 @@ public class GoodsController {
        * 查询商品详情
        */
     @GetMapping("/infoFeign/{id}")
-    public R infoFeign(@PathVariable Long id){
+    public R infoFeign(@PathVariable Long id) throws ExecutionException, InterruptedException {
         GoodsVO byId = goodsService.getGoodsVOFeignById(id);
         return R.ok(byId);
     }

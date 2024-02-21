@@ -22,7 +22,7 @@ import java.util.List;
  * 系统消息表 服务实现类
  * </p>
  *
- * @author 黎勇炫
+ * @author xhj
  * @since 2023-04-17 03:06:01
  */
 @Service

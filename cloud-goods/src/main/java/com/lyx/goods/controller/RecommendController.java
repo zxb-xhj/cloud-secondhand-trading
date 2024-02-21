@@ -13,6 +13,7 @@ import com.lyx.goods.entity.vo.RecommendVo;
 import com.lyx.goods.service.GoodsService;
 import com.lyx.goods.service.RecommendService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 import utils.ExcelUtils;
 
@@ -25,7 +26,7 @@ import java.util.List;
  *  前端控制器
  * </p>
  *
- * @author 黎勇炫
+ * @author xhj
  * @since 2023-04-15 02:19:14
  */
 @RestController
@@ -59,6 +60,7 @@ public class RecommendController {
        * 批量删除
        */
     @DeleteMapping("/{ids}")
+    @CacheEvict(value = "cloud-goods:releaseGoods:Recommend")
     public R deletes(@PathVariable List<Long> ids){
         recommendService.removeByIds(ids);
         return R.ok();

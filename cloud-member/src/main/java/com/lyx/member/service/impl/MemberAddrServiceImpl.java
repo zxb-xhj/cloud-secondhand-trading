@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  * 用户地址 服务实现类
  * </p>
  *
- * @author 黎勇炫
+ * @author xhj
  * @since 2023-03-25 09:42:34
  */
 @Service
@@ -56,9 +56,9 @@ public class MemberAddrServiceImpl extends ServiceImpl<MemberAddrMapper, MemberA
         baseMapper.selectPage(page,wrapper);
         PageUtils<MemberAddrVO> pageUtils = new PageUtils<>();
         // 手机号加密
-        page.getRecords().forEach(item->{
-            item.setMobile(MobileEncrypt.encrypt(item.getMobile()));
-        });
+//        page.getRecords().forEach(item->{
+//            item.setMobile(MobileEncrypt.encrypt(item.getMobile()));
+//        });
 
         // 转换vo
         List<MemberAddrVO> memberAddrVOS = memberMapStruct.memberAddrToMemberAddrVO(page.getRecords());

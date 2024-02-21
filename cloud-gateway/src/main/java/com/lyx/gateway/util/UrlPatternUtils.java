@@ -5,7 +5,7 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 
 /**
- * @author： 黎勇炫
+ * @author： xhj
  */
 public class UrlPatternUtils {
     public static boolean match(String patternUrl, String requestUrl) {

@@ -9,7 +9,10 @@ import com.lyx.member.entity.req.MemberPassReq;
 import com.lyx.member.entity.vo.MemberInfoVO;
 import com.lyx.member.entity.vo.MemberLoginVo;
 import com.lyx.member.entity.vo.MemberVO;
+import com.lyx.member.entity.vo.SchoolVO;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +21,7 @@ import java.util.Map;
  *  服务类
  * </p>
  *
- * @author 黎勇炫
+ * @author xhj
  * @since 2023-03-25 09:39:17
  */
 public interface MemberService extends IService<Member> {
@@ -110,4 +113,15 @@ public interface MemberService extends IService<Member> {
      * @return
      */
     String getMemberName(Long id);
+
+    /**
+     * 文件上传
+     * @param file
+     */
+    void getFile(MultipartFile file) throws IOException;
+
+    /**
+     * 根据商品id查询 用户id 查询用户学校和地址
+     */
+    SchoolVO getSchool(Long id);
 }

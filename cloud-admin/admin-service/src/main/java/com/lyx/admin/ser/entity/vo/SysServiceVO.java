@@ -2,7 +2,7 @@ package com.lyx.admin.ser.entity.vo;
 
 import lombok.Data;
 /**
- * @author： 黎勇炫
+ * @author： xhj
  */
 @Data
 public class SysServiceVO {

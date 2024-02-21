@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 /**
- * @author 黎勇炫
+ * @author xhj
  * @date 2022年10月09日 19:33
  */
 @Data

@@ -20,7 +20,7 @@ import java.util.concurrent.ExecutionException;
  *  服务类
  * </p>
  *
- * @author 黎勇炫
+ * @author xhj
  * @since 2023-03-31 11:16:28
  */
 public interface GoodsService extends IService<Goods> {
@@ -42,7 +42,7 @@ public interface GoodsService extends IService<Goods> {
      /**
        * 远程查询商品详情
        */
-    GoodsVO getGoodsVOFeignById(Long id);
+    GoodsVO getGoodsVOFeignById(Long id) throws ExecutionException, InterruptedException;
 
 
     /**
@@ -115,4 +115,11 @@ public interface GoodsService extends IService<Goods> {
      * @return
      */
     GoodsVO getViewCount(Long id) throws Exception;
+
+    /**
+     * 通过goodsIds查询商品信息
+     * @param goodsIds
+     * @return
+     */
+    List<GoodsVO> getByGoodsId(List<Long> goodsIds);
 }

@@ -35,11 +35,11 @@ public class OssUtil {
 
     @Value("${alibaba.cloud.oss.endpoint}")
     private String endpoint;
-    @Value("${alibaba.cloud.oss.sts.access-key}")
+    @Value("${alibaba.cloud.access-key}")
     private String accessKeyId;
-    @Value("${alibaba.cloud.oss.sts.secret-key}")
+    @Value("${alibaba.cloud.secret-key}")
     private String accessKeySecret;
-    @Value("${alibaba.cloud.oss.bucket}")
+    @Value("${alibaba.cloud.bucket}")
     private String bucket;
 
 

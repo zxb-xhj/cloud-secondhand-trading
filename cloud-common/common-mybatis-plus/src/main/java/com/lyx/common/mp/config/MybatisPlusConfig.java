@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
- * @author 黎勇炫
+ * @author xhj
  * @date 2022年10月08日 18:39
  */
 @Configuration

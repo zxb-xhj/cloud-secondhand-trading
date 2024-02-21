@@ -1,6 +1,6 @@
 package com.lyx.common.base.constant;
 /**
- * @author： 黎勇炫
+ * @author： xhj
  */
 public interface SecurityConstants {
 

@@ -7,10 +7,8 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="common-mybatis-plus" />
-        <module name="demo-storage" />
         <module name="cloud-goods" />
         <module name="admin-api" />
-        <module name="cloud-payment" />
         <module name="common-redis" />
         <module name="cloud-auth" />
         <module name="common-base" />
@@ -22,12 +20,18 @@
         <module name="cloud-search" />
         <module name="common-web" />
         <module name="cloud-order" />
-        <module name="demo-account" />
-        <module name="demo-order" />
         <module name="cloud-message" />
         <module name="admin-service" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="cloud-demo" target="8" />
+      <module name="cloud-payment" target="8" />
+      <module name="demo-account" target="8" />
+      <module name="demo-order" target="8" />
+      <module name="demo-seata" target="8" />
+      <module name="demo-storage" target="8" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">

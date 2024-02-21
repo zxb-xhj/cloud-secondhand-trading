@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * @author 黎勇炫
+ * @author xhj
  * @date 2023年03月25日 13:39
  */
 @Configuration
@@ -32,7 +32,7 @@ public class EsConfig {
 
     @Bean
     public RestHighLevelClient restHighLevelClient(){
-        RestClientBuilder restClientBuilder = RestClient.builder(new HttpHost("47.120.6.55", 9200, "http"));
+        RestClientBuilder restClientBuilder = RestClient.builder(new HttpHost("127.0.0.1", 9200, "http"));
         RestHighLevelClient restHighLevelClient = new RestHighLevelClient(restClientBuilder);
         return restHighLevelClient;
     }

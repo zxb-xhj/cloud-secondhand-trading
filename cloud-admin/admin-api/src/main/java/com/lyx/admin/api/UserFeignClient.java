@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 /**
- * @author 黎勇炫
+ * @author xhj
  * @date 2022年10月10日 17:10
  */
 @FeignClient(value = "cloud-admin")

@@ -11,4 +11,7 @@
     <select id="getMemberName" resultType="java.util.Map">
         select username,nickname from ums_member where id = #{id}
     </select>
+    <select id="getByIdMember" resultType="com.lyx.member.entity.Member">
+        select id,username,nickname,mobile,school_name,email from ums_member where id = #{id}
+    </select>
 </mapper>

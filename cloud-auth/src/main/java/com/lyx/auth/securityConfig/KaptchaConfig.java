@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.Properties;
 
 /**
- * @author 黎勇炫
+ * @author xhj
  * @date 2023年03月18日 12:47
  */
 @Configuration

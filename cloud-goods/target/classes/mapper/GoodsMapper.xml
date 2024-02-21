@@ -33,4 +33,12 @@
     <select id="getViewCount" resultType="java.lang.Integer">
         select view_count from gms_goods where id = #{id}
     </select>
+    <select id="getByGoodsId" resultType="com.lyx.goods.entity.vo.GoodsVO">
+        SELECT id, name, price, is_on_sell, default_img FROM gms_goods
+        WHERE id in
+        <foreach collection="goodsIds" item="id" index="index"
+                 open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
 </mapper>

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @author 黎勇炫
+ * @author xhj
  * @date 2022年10月10日 17:52
  */
 @RequestMapping("/api/oauth-clients")

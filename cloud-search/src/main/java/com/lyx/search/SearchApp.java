@@ -13,7 +13,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import java.io.IOException;
 
 /**
- * @author 黎勇炫
+ * @author xhj
  * @date 2023年03月25日 13:58
  */
 @SpringBootApplication
@@ -35,7 +35,7 @@ public class SearchApp {
 //        IndexRequest indexRequest  = new IndexRequest("users");
 //        indexRequest.id("1");
 //
-//        Users user = new Users("黎勇炫", 18);
+//        Users user = new Users("xhj", 18);
 //
 //        indexRequest.source(JSON.toJSONString(user), XContentType.JSON);
 //

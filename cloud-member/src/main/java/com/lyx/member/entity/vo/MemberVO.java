@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
- * @author 黎勇炫
+ * @author xhj
  * @date 2023年03月26日 12:03
  */
 @Data
@@ -57,7 +57,7 @@ public class MemberVO implements Serializable {
     /**
      * 生日
      */
-    private LocalDate birth;
+    private String schoolName;
 
     /**
      * 账号状态
@@ -143,12 +143,12 @@ public class MemberVO implements Serializable {
         this.gender = gender;
     }
 
-    public LocalDate getBirth() {
-        return birth;
+    public String getSchoolName() {
+        return schoolName;
     }
 
-    public void setBirth(LocalDate birth) {
-        this.birth = birth;
+    public void setSchoolName(String schoolName) {
+        this.schoolName = schoolName;
     }
 
     public Integer getStatus() {

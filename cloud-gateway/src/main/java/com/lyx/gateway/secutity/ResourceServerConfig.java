@@ -1,7 +1,7 @@
 package com.lyx.gateway.secutity;
 
 /**
- * @author 黎勇炫
+ * @author xhj
  * @date 2022年10月11日 18:05
  */
 import com.lyx.common.base.constant.SecurityConstants;

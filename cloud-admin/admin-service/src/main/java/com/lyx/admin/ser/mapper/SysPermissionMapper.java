@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 /**
- * @author： 黎勇炫
+ * @author： xhj
  */
 @Mapper
 public interface SysPermissionMapper extends BaseMapper<SysPermission> {

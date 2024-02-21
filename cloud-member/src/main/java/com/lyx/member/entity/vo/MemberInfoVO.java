@@ -1,5 +1,7 @@
 package com.lyx.member.entity.vo;
 
+import com.alibaba.excel.annotation.ExcelProperty;
+import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,4 +41,9 @@ public class MemberInfoVO implements Serializable {
      * 邮箱
      */
     private String email;
+
+    /**
+     * 学校
+     */
+    private String schoolName;
 }

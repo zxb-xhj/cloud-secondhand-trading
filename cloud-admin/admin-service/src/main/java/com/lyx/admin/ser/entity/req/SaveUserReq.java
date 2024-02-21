@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 /**
- * @author： 黎勇炫
+ * @author： xhj
  */
 @Data
 public class SaveUserReq {

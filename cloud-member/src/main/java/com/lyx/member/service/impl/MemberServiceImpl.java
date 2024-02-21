@@ -17,20 +17,31 @@ import com.lyx.member.entity.req.MemberPassReq;
 import com.lyx.member.entity.vo.MemberInfoVO;
 import com.lyx.member.entity.vo.MemberLoginVo;
 import com.lyx.member.entity.vo.MemberVO;
+import com.lyx.member.entity.vo.SchoolVO;
 import com.lyx.member.mapper.MemberMapper;
 import com.lyx.member.service.MemberAddrService;
 import com.lyx.member.service.MemberService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.lyx.member.utils.JwtUtil;
 import com.lyx.member.utils.MobileEncrypt;
+import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static org.bouncycastle.asn1.x500.style.RFC4519Style.member;
 
@@ -39,10 +50,11 @@ import static org.bouncycastle.asn1.x500.style.RFC4519Style.member;
  *  服务实现类
  * </p>
  *
- * @author 黎勇炫
+ * @author xhj
  * @since 2023-03-25 09:39:17
  */
 @Service
+@Slf4j
 public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> implements MemberService {
 
 
@@ -51,6 +63,13 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
     @Autowired
     private MemberAddrService memberAddrService;
 
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+    @Autowired
+    private RedissonClient redissonClient;
+
+    @Value("${com.name}")
+    private String name;
     @Override
     public PageUtils<MemberVO> pageMember(MemberListPageReq req) {
         // 构建分页对象 设置分页参数
@@ -65,9 +84,9 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
         baseMapper.selectPage(page,wrapper);
         PageUtils<MemberVO> pageUtils = new PageUtils<>();
         // 手机号加密
-        page.getRecords().forEach(item->{
-            item.setMobile(MobileEncrypt.encrypt(item.getMobile()));
-        });
+//        page.getRecords().forEach(item->{
+//            item.setMobile(MobileEncrypt.encrypt(item.getMobile()));
+//        });
         // 转换vo
         pageUtils.setList(memberMapStruct.memberToMemberVO(page.getRecords()));
         pageUtils.setPageNo(page.getCurrent());
@@ -121,7 +140,9 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
             member.setId(one.getId());
             memberLoginVo.setMember(member);
             memberLoginVo.setId(one.getId().intValue());
-            memberLoginVo.setToken("sdfsdrfgdfgfdghf.sdfsdfsdf.sffgfghfg");
+            System.out.println(name);
+            String token = JwtUtil.generateToken(req.getUsername(), name);
+            memberLoginVo.setToken(token);
             return memberLoginVo;
         }
         return null;
@@ -200,11 +221,12 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
      */
     @Override
     public void register(MemberPassReq req) throws Exception {
-        if (req.getName()==null||req.getPassword()==null){
+        if (req.getName()==null||req.getPassword()==null||req.getSchoolName()==null){
             throw new Exception();
         }
         Member member = new Member();
         member.setUsername(req.getName());
+        member.setSchoolName(req.getSchoolName());
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encode = passwordEncoder.encode(req.getPassword());
         member.setPassword(encode);
@@ -216,14 +238,16 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
      * @param req
      */
     @Override
-    @CacheEvict(value = "cloud-member:member",key = "#req.memberId")
+    @CacheEvict(value = "cloud-member",key = "#req.memberId")
     public void updateMember(MemberListPageReq req) {
         LambdaUpdateWrapper<Member> wrapper = Wrappers.lambdaUpdate();
         wrapper.eq(req.getMemberId()!=null,Member::getId,req.getMemberId())
                 .set(req.getNickname()!=null,Member::getNickname,req.getNickname())
                 .set(req.getMobile()!=null,Member::getMobile,req.getMobile())
-                .set(req.getEmail()!=null,Member::getEmail,req.getEmail());
+                .set(req.getEmail()!=null,Member::getEmail,req.getEmail())
+                .set(req.getSchoolName()!=null,Member::getSchoolName,req.getSchoolName());
         update(wrapper);
+//        redisTemplate.delete("cloud-member:member"+req.getMemberId());
     }
 
     /**
@@ -232,16 +256,11 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
      * @return
      */
     @Override
-    @Cacheable(value = "cloud-member:member",key = "#id")
+//    @Cacheable(value = "cloud-member",key = "#id")
     public MemberInfoVO getMemberById(Long id) {
-        Member member = getById(id);
+        Member member = baseMapper.getByIdMember(id);
         MemberInfoVO memberInfoVO = new MemberInfoVO();
         BeanUtils.copyProperties(member,memberInfoVO);
-//        memberInfoVO.setMobile(member.getMobile());
-//        memberInfoVO.setId(member.getId());
-//        memberInfoVO.setNickname(member.getNickname());
-//        memberInfoVO.setUsername(member.getUsername());
-//        memberInfoVO.setEmail(member.getEmail());
         return memberInfoVO;
     }
 
@@ -292,5 +311,36 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
     public String getMemberName(Long id) {
         Map<String,String> name = baseMapper.getMemberName(id);
         return name.get("nickname")!=null?name.get("nickname"):name.get("username");
+    }
+
+    /**
+     * 文件上传
+     * @param file
+     */
+    @Override
+    public void getFile(MultipartFile file) throws IOException {
+        byte[] bytes = file.getBytes();
+        FileOutputStream stream = new FileOutputStream("D:/"+file.getOriginalFilename());
+        int offset = 0;
+        int length = 1024; // 每次写入的字节数
+        while (offset < bytes.length) {
+            int remaining = Math.min(length, bytes.length - offset);
+            stream.write(bytes, offset, remaining);
+            offset += remaining;
+        }
+        stream.close();
+    }
+
+    /**
+     * 根据商品id查询 用户id 查询用户学校和地址
+     */
+    @Override
+    public SchoolVO getSchool(Long id) {
+        // 查询该商品是谁发布
+
+        // 根据会员id查询学校和详细地址
+
+
+        return null;
     }
 }

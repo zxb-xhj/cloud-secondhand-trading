@@ -3,7 +3,7 @@ package com.lyx.common.web.utils;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * @author 黎勇炫
+ * @author xhj
  * @date 2023年04月05日 14:07
  */
 public class ResponseUtils {

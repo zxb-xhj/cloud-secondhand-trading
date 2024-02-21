@@ -146,9 +146,9 @@
         <el-descriptions-item>
           <template slot="label">
             <i class="el-icon-date"></i>
-            生日
+            学校
           </template>
-          {{ userForm.birth }}
+          {{ userForm.schoolName }}
         </el-descriptions-item>
 
         <el-descriptions-item>

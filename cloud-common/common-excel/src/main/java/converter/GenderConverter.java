@@ -8,7 +8,7 @@ import com.alibaba.excel.metadata.data.WriteCellData;
 import com.alibaba.excel.metadata.property.ExcelContentProperty;
 
 /**
- * @author 黎勇炫
+ * @author xhj
  * @date 2023年03月28日 14:18
  */
 public class GenderConverter implements Converter<Integer> {

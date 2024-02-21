@@ -10,7 +10,7 @@ import com.lyx.admin.ser.entity.vo.SysMenuVO;
 import java.util.List;
 
 /**
- * @author： 黎勇炫
+ * @author： xhj
  */
 public interface ISysMenuService extends IService<SysMenu> {
 //    /**

@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * @author： 黎勇炫
+ * @author： xhj
  */
 @Data
 public class BaseEntity {

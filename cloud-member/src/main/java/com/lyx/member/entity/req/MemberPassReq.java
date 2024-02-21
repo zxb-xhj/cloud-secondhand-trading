@@ -13,4 +13,5 @@ public class MemberPassReq {
     private String name;
     private String password;
     private String oldpassword;
+    private String schoolName;
 }

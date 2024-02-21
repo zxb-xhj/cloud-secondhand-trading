@@ -6,7 +6,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * @author： 黎勇炫
+ * @author： xhj
  */
 @Data
 @TableName("sys_menu")

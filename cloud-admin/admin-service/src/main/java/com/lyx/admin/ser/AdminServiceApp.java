@@ -7,7 +7,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.ComponentScan;
 
 /**
- * @author 黎勇炫
+ * @author xhj
  * @date 2022年10月10日 17:14
  */
 @SpringBootApplication

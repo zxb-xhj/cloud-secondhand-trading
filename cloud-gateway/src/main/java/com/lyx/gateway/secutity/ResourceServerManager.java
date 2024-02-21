@@ -1,7 +1,7 @@
 package com.lyx.gateway.secutity;
 
 /**
- * @author 黎勇炫
+ * @author xhj
  * @date 2022年10月11日 18:07
  */
 import cn.hutool.core.collection.CollectionUtil;
@@ -10,9 +10,12 @@ import cn.hutool.core.util.StrUtil;
 import com.lyx.common.base.constant.GlobalConstants;
 import com.lyx.common.base.constant.SecurityConstants;
 import com.lyx.gateway.util.UrlPatternUtils;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
@@ -28,6 +31,7 @@ import org.springframework.util.PathMatcher;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -41,15 +45,18 @@ public class ResourceServerManager implements ReactiveAuthorizationManager<Autho
     @Setter
     private List<String> ignoreUrls;
 
+    @Value("${xhj.name}")
+    private String name;
+
     @Override
     public Mono<AuthorizationDecision> check(Mono<Authentication> mono, AuthorizationContext authorizationContext) {
         ServerHttpRequest request = authorizationContext.getExchange().getRequest();
         if (request.getMethod() == HttpMethod.OPTIONS) { // 预检请求放行
             return Mono.just(new AuthorizationDecision(true));
         }
-        if (request.getPath().toString().split("/")[1].equals("api")){
-            return Mono.just(new AuthorizationDecision(true));
-        }
+//        if (request.getPath().toString().split("/")[1].equals("api")){
+//            return Mono.just(new AuthorizationDecision(true));
+//        }
         PathMatcher pathMatcher = new AntPathMatcher();
         String method = request.getMethodValue();
         String path = request.getURI().getPath();
@@ -60,10 +67,15 @@ public class ResourceServerManager implements ReactiveAuthorizationManager<Autho
         // 如果token为空 或者token不合法 则进行拦截
         String restfulPath = method + ":" + path; // RESTFul接口权限设计 @link https://www.cnblogs.com/haoxianrui/p/14961707.html
         String token = request.getHeaders().getFirst(SecurityConstants.AUTHORIZATION_KEY);
+        if (token!=null){
+            token = token.replace("\"","");
+        }
+        // 解析用户token
+        if (getSubjectFromToken(token,name)){
+            return Mono.just(new AuthorizationDecision(true));
+        }
         if (StrUtil.isBlank(token) || !StrUtil.startWithIgnoreCase(token, SecurityConstants.JWT_PREFIX)) {
             return Mono.just(new AuthorizationDecision(false));
-        }else{
-
         }
         // 从redis中获取资源权限
         Map<String, Object> urlPermRolesRules = redisTemplate.opsForHash().entries(GlobalConstants.URL_PERM_ROLES_KEY);
@@ -112,5 +124,22 @@ public class ResourceServerManager implements ReactiveAuthorizationManager<Autho
             }
         }
         return false;
+    }
+
+    /**
+     * 解析token
+     * @param token
+     * @return
+     */
+    public boolean getSubjectFromToken(String token, String secretKey){
+        try{
+            Claims claims = Jwts.parser()
+                    .setSigningKey(secretKey)  //secretKey 密钥
+                    .parseClaimsJws(token) //生成的token
+                    .getBody();
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 }

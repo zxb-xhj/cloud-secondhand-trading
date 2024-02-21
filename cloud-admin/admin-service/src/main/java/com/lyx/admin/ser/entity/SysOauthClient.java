@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
- * @author： 黎勇炫
+ * @author： xhj
  */
 @Data
 @TableName("sys_oauth_client")

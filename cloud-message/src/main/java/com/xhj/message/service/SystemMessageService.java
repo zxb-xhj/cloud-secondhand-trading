@@ -11,7 +11,7 @@ import com.xhj.message.entity.vo.SystemMessageVO;
  * 系统消息表 服务类
  * </p>
  *
- * @author 黎勇炫
+ * @author xhj
  * @since 2023-04-17 03:06:01
  */
 public interface SystemMessageService extends IService<SystemMessage> {

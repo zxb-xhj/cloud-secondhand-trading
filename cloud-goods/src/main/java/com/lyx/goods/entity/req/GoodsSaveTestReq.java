@@ -90,4 +90,28 @@ public class GoodsSaveTestReq {
      */
     @NotNull(message = "数量不能为空")
     private Integer total;
+
+    /**
+     * 运费
+     */
+    @NotNull(message = "运费不能为空")
+    private Long freight;
+
+    /**
+     * 收货方式
+     */
+    @NotNull(message = "收货方式不能为空")
+    private Integer deliveryMethod;
+
+    /**
+     * 学校
+     */
+//    @NotNull(message = "学校不能为空")
+    private String schoolName;
+
+    /**
+     * 详细地址
+     */
+//    @NotNull(message = "学校不能为空")
+    private String addr;
 }

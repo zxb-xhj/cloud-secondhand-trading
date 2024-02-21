@@ -16,7 +16,7 @@ import lombok.Data;
  * 系统消息表
  * </p>
  *
- * @author 黎勇炫
+ * @author xhj
  * @since 2023-04-17 03:06:01
  */
 @Data

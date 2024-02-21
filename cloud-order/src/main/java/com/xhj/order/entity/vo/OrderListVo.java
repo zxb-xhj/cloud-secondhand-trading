@@ -16,9 +16,13 @@ import java.time.LocalDateTime;
 @Data
 public class OrderListVo {
     /**
-     * 商品id
+     * 订单id
      */
     private Long id;
+    /**
+     * 商品id
+     */
+    private Long goodsId;
     /**
      * 商品名称
      */

@@ -14,6 +14,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -27,7 +28,7 @@ import java.util.stream.Collectors;
  *  服务实现类
  * </p>
  *
- * @author 黎勇炫
+ * @author xhj
  * @since 2023-03-31 11:16:28
  */
 @Service
@@ -81,7 +82,10 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
        * 逻辑删除分类 同时删除缓存中的数据
        */
     @Override
-    @CacheEvict(value = "category",allEntries = true)
+    @Caching(evict = {
+            @CacheEvict(value = "category",allEntries = true),
+            @CacheEvict(value = "cloud-goods:releaseGoods:category")
+    })
     public void removeCategory(Long id) {
         // 先查看是否有子分类
         Integer count = lambdaQuery().eq(Category::getParentCid, id).count();
@@ -98,7 +102,10 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
      * @param req
      */
     @Override
-    @CacheEvict(value = "category",allEntries = true)
+    @Caching(evict = {
+            @CacheEvict(value = "category",allEntries = true),
+            @CacheEvict(value = "cloud-goods:releaseGoods:category")
+    })
     public void saveCategory(CategorySaveReq req) {
         Category category = new Category();
         BeanUtils.copyProperties(req,category);
@@ -141,7 +148,10 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
      * @param ids
      */
     @Override
-    @CacheEvict(value = "category",allEntries = true)
+    @Caching(evict = {
+            @CacheEvict(value = "category",allEntries = true),
+            @CacheEvict(value = "cloud-goods:releaseGoods:category")
+    })
     public void batchDelete(List<Long> ids) {
         removeByIds(ids);
     }
@@ -150,6 +160,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
      * 查询1号分类菜单
      */
     @Override
+    @Cacheable(value = "cloud-goods:releaseGoods:category")
     public List<CategoryVo> category() {
         LambdaQueryWrapper<Category> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(Category::getCatLevel,1);

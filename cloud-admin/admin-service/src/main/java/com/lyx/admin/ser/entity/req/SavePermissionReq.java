@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
- * @author： 黎勇炫
+ * @author： xhj
  */
 @Data
 @Accessors(chain = true)

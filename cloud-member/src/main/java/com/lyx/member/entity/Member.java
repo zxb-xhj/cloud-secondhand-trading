@@ -22,7 +22,7 @@ import lombok.Data;
  * 
  * </p>
  *
- * @author 黎勇炫
+ * @author xhj
  * @since 2023-03-25 09:39:17
  */
 @TableName("ums_member")
@@ -86,12 +86,11 @@ public class Member implements Serializable {
     private Integer gender;
 
     /**
-     * 生日
+     * 学校
      */
-    @ExcelProperty(value = "生日",converter = LocalDateConverter.class)
+    @ExcelProperty(value = "学校")
     @ColumnWidth(15)
-    @DateTimeFormat("yyyy-MM-dd")
-    private LocalDate birth;
+    private String schoolName;
 
     /**
      * 账号状态
@@ -191,12 +190,12 @@ public class Member implements Serializable {
         this.gender = gender;
     }
 
-    public LocalDate getBirth() {
-        return birth;
+    public String getSchoolName() {
+        return schoolName;
     }
 
-    public void setBirth(LocalDate birth) {
-        this.birth = birth;
+    public void setSchoolName(String schoolName) {
+        this.schoolName = schoolName;
     }
 
     public Integer getStatus() {

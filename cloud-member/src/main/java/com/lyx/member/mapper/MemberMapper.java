@@ -12,7 +12,7 @@ import java.util.Map;
  *  Mapper 接口
  * </p>
  *
- * @author 黎勇炫
+ * @author xhj
  * @since 2023-03-25 09:39:17
  */
 @Mapper
@@ -31,4 +31,6 @@ public interface MemberMapper extends BaseMapper<Member> {
      * @return
      */
     Map<String, String> getMemberName(Long id);
+
+    Member getByIdMember(Long id);
 }

@@ -11,7 +11,7 @@ import org.mapstruct.Mapper;
 import java.util.List;
 
 /**
- * @author 黎勇炫
+ * @author xhj
  * @date 2022年10月27日 21:47
  */
 @Mapper(componentModel = "spring")

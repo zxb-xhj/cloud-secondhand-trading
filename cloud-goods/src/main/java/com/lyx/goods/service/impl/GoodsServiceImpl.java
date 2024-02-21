@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lyx.common.base.entity.dto.*;
-import com.lyx.common.base.result.R;
 import com.lyx.common.mp.utils.PageUtils;
 import com.lyx.goods.entity.*;
 import com.lyx.goods.entity.req.GoodsListPageReq;
@@ -22,6 +21,8 @@ import com.lyx.goods.mapper.GoodsMapper;
 import com.lyx.goods.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -31,11 +32,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import javax.swing.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -48,7 +47,7 @@ import java.util.stream.Collectors;
  * 服务实现类
  * </p>
  *
- * @author 黎勇炫
+ * @author xhj
  * @since 2023-03-31 11:16:28
  */
 @Service
@@ -73,7 +72,12 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     private StringRedisTemplate redisTemplate;
     @Autowired
     private ThreadPoolExecutor executor;
+    @Autowired
+    private GoodsDeliveryService deliveryService;
 
+
+    @Autowired
+    private RedissonClient redissonClient;
 
     /**
      * 分页查询商品
@@ -119,7 +123,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
      */
     @Transactional
     @Override
-    @CacheEvict(value = "cloud-goods:releaseGoods",key = "#memberId")
+//    @CacheEvict(value = "cloud-goods:releaseGoods",key = "#memberId")
     public void changeIsOnSell(List<Long> goodsIds, Integer isOnSell,Long memberId) {
         LambdaUpdateWrapper<Goods> updateWrapper = Wrappers.lambdaUpdate();
         // 上架操作
@@ -148,14 +152,15 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
             BeanUtils.copyProperties(goods,goodsEsDTOs);
             // 远程调用es 上架商品
             searchElasticFeignService.goodsStatusUp(goodsEsDTOs);
+            this.update(updateWrapper);
         // 下架操作
         }else {
             updateWrapper.set(Goods::getIsOnSell,0)
                     .in(Goods::getId,goodsIds);
             // 远程调用es 下架商品
             searchElasticFeignService.goodsDelete(goodsIds);
+            this.update(updateWrapper);
         }
-        this.update(updateWrapper);
     }
 
     /**
@@ -167,8 +172,18 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
 //    @Cacheable(value = {"areaVo"},key = "'AreaVo'", sync = true)
     @Cacheable(value = "cloud-goods:goods", key = "#id")
     public GoodsVO getGoodsVOById(Long id) throws ExecutionException, InterruptedException {
+        //TODO 添加分布式锁
+        RLock lock = redissonClient.getLock("lock");
+        lock.lock();
         // 查询VO
         GoodsVO vo = new GoodsVO();
+        // 查询商品配送方式
+        CompletableFuture<Void> runAsync6 = CompletableFuture.runAsync(() -> {
+            GoodsDelivery goodsDelivery = deliveryService.getById(id);
+            vo.setFreight(goodsDelivery.getFreight()!=null?goodsDelivery.getFreight():0);
+            vo.setDeliveryMethod(goodsDelivery.getDeliveryMethod());
+            vo.setSchoolName(goodsDelivery.getSchoolName());
+        });
         CompletableFuture<GoodsVO> supplyAsync = CompletableFuture.supplyAsync(() -> {
             GoodsVO goodsVO = baseMapper.getGoodsVOById(id);
             return goodsVO;
@@ -226,7 +241,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
                         String mobile = memberFeignService.getMemberMobile(Long.parseLong(goods.getSellerId() + ""));
                         vo.setMobile(mobile);
                     }, executor);
-                    CompletableFuture.allOf(runAsync, runAsync1, runAsync2, runAsync3, runAsync4,async).get();
+                    CompletableFuture.allOf(runAsync, runAsync1, runAsync2, runAsync3, runAsync4,async,runAsync6).get();
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -234,7 +249,8 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
                 e.printStackTrace();
             }
         }, executor);
-        CompletableFuture.allOf(runAsync5,supplyAsync).get();
+        CompletableFuture.allOf(runAsync5,supplyAsync,runAsync6).get();
+        lock.unlock();
         return vo;
     }
 
@@ -244,20 +260,29 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
      * @param id
      */
     @Override
-    public GoodsVO getGoodsVOFeignById(Long id) {
+    public GoodsVO getGoodsVOFeignById(Long id) throws ExecutionException, InterruptedException {
         // 查询VO
         GoodsVO goodsVO = baseMapper.getGoodsVOById(id);
-        // 设置商品图片
-        List<GoodsImages> images = imagesService.lambdaQuery().eq(GoodsImages::getGoodsId, id).orderByAsc(GoodsImages::getCreateTime).select().list();
-        goodsVO.setImages(images);
-        // 递归查找父分类
-        goodsVO.setCategoryPath(categoryService.findParentCategory(goodsVO.getCid()));
-        // 设置商品详情
-        GoodsDetails goodsDetails = detailsService.lambdaQuery().eq(GoodsDetails::getGoodsId, id).one();
-        goodsVO.setDetails(goodsDetails);
-        String s = UUID.randomUUID().toString().replace("-","");
-        redisTemplate.opsForValue().set("order:token:"+s,s,30, TimeUnit.MINUTES);
-        goodsVO.setToken(s);
+        if (goodsVO!=null){
+            // 查询商品配送方式
+            CompletableFuture<Void> runAsync = CompletableFuture.runAsync(() -> {
+                GoodsDelivery goodsDelivery = deliveryService.getById(id);
+                goodsVO.setFreight(goodsDelivery.getFreight()!=null?goodsDelivery.getFreight():0);
+                goodsVO.setDeliveryMethod(goodsDelivery.getDeliveryMethod());
+            });
+            // 设置商品图片
+            List<GoodsImages> images = imagesService.lambdaQuery().eq(GoodsImages::getGoodsId, id).orderByAsc(GoodsImages::getCreateTime).select().list();
+            goodsVO.setImages(images);
+            // 递归查找父分类
+            goodsVO.setCategoryPath(categoryService.findParentCategory(goodsVO.getCid()));
+            // 设置商品详情
+            GoodsDetails goodsDetails = detailsService.lambdaQuery().eq(GoodsDetails::getGoodsId, id).one();
+            goodsVO.setDetails(goodsDetails);
+            String s = UUID.randomUUID().toString().replace("-","");
+            redisTemplate.opsForValue().set("order:token:"+s,s,30, TimeUnit.MINUTES);
+            goodsVO.setToken(s);
+            CompletableFuture.allOf(runAsync).get();
+        }
         return goodsVO;
     }
 
@@ -337,13 +362,20 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         audit.setGoodsId(goods.getId());
         audit.setState(0L);
         auditService.save(audit);
-        //
-        GoodsDetails details = new GoodsDetails();
-        details.setContent(("<h1>你好</h1>"));
-        details.setGoodsId(goods.getId());
-        details.setCreatedAt(LocalDateTime.now());
-        details.setUpdatedAt(LocalDateTime.now());
-        detailsService.save(details);
+        // 保存收货信息和运费
+        GoodsDelivery delivery = new GoodsDelivery();
+        delivery.setDeliveryMethod(req.getDeliveryMethod());
+        delivery.setGoodsId(goods.getId());
+        delivery.setFreight(req.getFreight());
+        delivery.setSchoolName(req.getSchoolName());
+        delivery.setAddr(req.getAddr());
+        deliveryService.save(delivery);
+//        GoodsDetails details = new GoodsDetails();
+//        details.setContent(("<h1>你好</h1>"));
+//        details.setGoodsId(goods.getId());
+//        details.setCreatedAt(LocalDateTime.now());
+//        details.setUpdatedAt(LocalDateTime.now());
+//        detailsService.save(details);
         // 上传图片集
         List<GoodsImages> collect = req.getImages().stream().map(images -> {
             GoodsImages goodsImage = new GoodsImages();
@@ -416,6 +448,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         EsGoodsDTO esGoodsDTO = new EsGoodsDTO();
         esGoodsDTO.setCid(categories);
         esGoodsDTO.setName(req.getName());
+        // 远程调用es
         List<GoodsDTO> goodsDTOS = searchElasticFeignService.goodsEsList(esGoodsDTO);
         List<GoodsVO> collect = null;
         if (goodsDTOS!=null){
@@ -571,5 +604,15 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         }, executor);
         CompletableFuture.allOf(supplyAsync,supplyAsync1,supplyAsync2,runAsync,runAsync1).get();
         return supplyAsync2.get();
+    }
+
+    /**
+     * 通过goodsIds查询商品信息
+     * @param goodsIds
+     * @return
+     */
+    @Override
+    public List<GoodsVO> getByGoodsId(List<Long> goodsIds) {
+        return baseMapper.getByGoodsId(goodsIds);
     }
 }

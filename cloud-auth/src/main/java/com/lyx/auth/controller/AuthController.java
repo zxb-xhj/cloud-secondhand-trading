@@ -30,7 +30,7 @@ import java.security.interfaces.RSAPublicKey;
 import java.util.Map;
 
 /**
- * @author 黎勇炫
+ * @author xhj
  * @date 2022年10月09日 19:56
  */
 @RestController
@@ -54,7 +54,6 @@ public class AuthController {
             throw new BizException(ResultCode.CAPTCHA_ERROR);
         }
     }
-
 
     @GetMapping("/public-key")
     public Map<String, Object> getPublicKey() {

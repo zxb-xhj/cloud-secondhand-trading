@@ -1,7 +1,7 @@
 package com.lyx.common.redis.config;
 
 /**
- * @author 黎勇炫
+ * @author xhj
  * @date 2023年04月03日 21:13
  */
 

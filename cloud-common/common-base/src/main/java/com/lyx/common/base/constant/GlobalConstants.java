@@ -1,7 +1,7 @@
 package com.lyx.common.base.constant;
 
 /**
- * @author 黎勇炫
+ * @author xhj
  * @date 2022年10月10日 17:25
  */
 public class GlobalConstants {

@@ -13,7 +13,7 @@ import java.util.List;
  *  服务类
  * </p>
  *
- * @author 黎勇炫
+ * @author xhj
  * @since 2023-04-15 02:19:14
  */
 public interface RecommendService extends IService<Recommend> {

@@ -9,7 +9,7 @@ import org.mapstruct.Mapper;
 import java.util.List;
 
 /**
- * @author 黎勇炫
+ * @author xhj
  * @date 2023年03月26日 12:11
  */
 @Mapper(componentModel="spring")

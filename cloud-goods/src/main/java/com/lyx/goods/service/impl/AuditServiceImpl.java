@@ -69,13 +69,15 @@ public class AuditServiceImpl extends ServiceImpl<AuditMapper, Audit> implements
     @Transactional
     @Override
     public PageUtils<AuditVo> listPage(AuditListPageReq req) {
-        Page<AuditVo> page = new Page<>(req.getPageNo(),req.getPageSize());
+        Page<Audit> page = new Page<>(req.getPageNo(),req.getPageSize());
+        Page<AuditVo> pagev = new Page<>(req.getPageNo(),req.getPageSize());
         // 创建查询商品审核条件
         LambdaQueryWrapper<Audit> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(req.getState()!=null,Audit::getState,req.getState());
         // 查询商品审核列表
         List<Audit> audits = this.list(wrapper);
-        List<AuditVo> auditVos = audits.stream().map(audit -> {
+        Page<Audit> auditPage = baseMapper.selectPage(page, wrapper);
+        List<AuditVo> auditVos = auditPage.getRecords().stream().map(audit -> {
             // 创建Goods 查询条件
             LambdaQueryWrapper<Goods> lambdaQuery = Wrappers.lambdaQuery();
             lambdaQuery.like(StringUtils.isNotEmpty(req.getName()),Goods::getName,req.getName())
@@ -99,9 +101,9 @@ public class AuditServiceImpl extends ServiceImpl<AuditMapper, Audit> implements
             return null;
             //过滤掉空值
         }).filter(auditVo -> auditVo!=null).collect(Collectors.toList());
-        page.setRecords(auditVos);
-        page.setTotal(auditVos.stream().count());
-        return PageUtils.build(page);
+        pagev.setRecords(auditVos);
+        pagev.setTotal(audits.size());
+        return PageUtils.build(pagev);
     }
 
     /**

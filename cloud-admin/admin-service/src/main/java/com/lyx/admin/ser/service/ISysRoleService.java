@@ -10,7 +10,7 @@ import com.lyx.common.mp.utils.PageUtils;
 import java.util.List;
 
 /**
- * @author： 黎勇炫
+ * @author： xhj
  */
 public interface ISysRoleService extends IService<SysRole> {
 

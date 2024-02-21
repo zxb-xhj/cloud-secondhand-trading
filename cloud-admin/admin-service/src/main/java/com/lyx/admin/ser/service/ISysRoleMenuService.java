@@ -6,7 +6,7 @@ import com.lyx.admin.ser.entity.SysRoleMenu;
 import java.util.List;
 
 /**
- * @author： 黎勇炫
+ * @author： xhj
  */
 public interface ISysRoleMenuService extends IService<SysRoleMenu> {
 

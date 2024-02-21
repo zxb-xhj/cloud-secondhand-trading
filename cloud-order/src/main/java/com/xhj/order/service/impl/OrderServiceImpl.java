@@ -120,6 +120,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper,Order> implements 
                         BeanUtils.copyProperties(order, orderListVo);
                         orderListVo.setBuyer(order.getMemberUsername());
                         orderListVo.setId(order.getId());
+                        orderListVo.setGoodsId(order.getGoodsId());
                         orderListVo.setSeller(goodsDTO.getSeller());
                         orderListVo.setState(order.getState());
                         orderListVo.setDefaultImg(goodsDTO.getDefaultImg());
@@ -241,18 +242,18 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper,Order> implements 
             try{
                 // 扣除库存
                 storageFeignService.updateStorage(req.getGoodsId());
-                R byId = memberFeignService.getById(req.getAddrId());
-                if (byId.getData()!=null){
-                    String s = JSONObject.toJSONString(byId.getData());
-                    OrderAddrMemberReq orderAddrMemberReq = JSON.parseObject(s, OrderAddrMemberReq.class);
+//                R byId = memberFeignService.getById(req.getAddrId());
+//                if (byId.getData()!=null){
+//                    String s = JSONObject.toJSONString(byId.getData());
+//                    OrderAddrMemberReq orderAddrMemberReq = JSON.parseObject(s, OrderAddrMemberReq.class);
 
                     // 保存收货地址
                     OrderAddr orderAddr = new OrderAddr();
-                    BeanUtils.copyProperties(orderAddrMemberReq,orderAddr);
+                    BeanUtils.copyProperties(req,orderAddr);
                     orderAddr.setCreateTime(LocalDateTime.now());
-                    orderAddr.setArea(orderAddrMemberReq.getAddrsPath()[orderAddrMemberReq.getAddrsPath().length-1]);
-                    orderAddr.setProvince(orderAddrMemberReq.getAddrsPath()[0]);
-                    orderAddr.setCity(orderAddrMemberReq.getAddrsPath()[1]);
+                    orderAddr.setArea(req.getArea());
+                    orderAddr.setProvince(req.getProvince());
+                    orderAddr.setCity(req.getCity());
                     orderAddrService.save(orderAddr);
 
                     // 生成订单
@@ -266,21 +267,22 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper,Order> implements 
                     order.setTotalAmount(req.getPrice());
                     order.setDeleteStatus(0);
                     order.setState(0);
-                    order.setSourceType(0);
+                    order.setSourceType(req.getDeliveryMethod());
                     order.setConfirmStatus(0);
+                    order.setFootprint(req.getFreight());
                     order.setIsPayed(0);
                     this.baseMapper.insert(order);
                     MemberAddrDTO memberAddrDTO = new MemberAddrDTO();
                     memberAddrDTO.setMemberId(req.getMemberId());
                     orderAddrVo.setMemberAddrDTO(memberAddrDTO);
                     // 把request带过去
-                    orderAddrVo.setAttributeNames(request.getAttributeNames().toString());
+//                    orderAddrVo.setAttributeNames(request.getAttributeNames().toString());
                     // 把商品id和地址id保存到redis
                     // 保存订单号到redis 30分钟
                     String name = "order:"+req.getMemberId()+":"+id;
                     redisTemplate.opsForValue()
                             .set(name, req.getGoodsId()+"."+orderAddr.getId(),30L, TimeUnit.MINUTES);
-                }
+//                }
                 orderAddrVo.setId(id+"");
                 orderAddrVo.setGoodsId(req.getGoodsId());
                 // 订单创建成功 发送消息给rabbitMq
@@ -291,6 +293,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper,Order> implements 
                 orderAddrVo.setCode(2);
                 semaphore.release();
                 return orderAddrVo;
+            }finally {
+                redissonClient.shutdown();
             }
         }
         orderAddrVo.setCode(2);
@@ -336,21 +340,22 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper,Order> implements 
             // 如果是待付款状态则取消
             if (order.getState()==0||order.getState()==null){
                 deleteOrder(order,req);
+                storageFeignService.addStorageTotal(order.getGoodsId());
+                // 加库存 获取信号量
+                RSemaphore semaphore = redissonClient.getSemaphore("goods:"+order.getGoodsId());
+                semaphore.release();
             }
             // 如果已支付则修改支付状态
-            if (order.getState()==1){
-                payService.updateState(order.getOrderSn(),0);
-            }
-            if (order.getState()!=4){
-                storageFeignService.addStorageTotal(order.getGoodsId());
-            }
+//            if (order.getState()==1){
+//                payService.updateState(order.getOrderSn(),0);
+//            }
+//            if (order.getState()!=4){
+//
+//            }
         }
         // 删除redis里面的订单信息
         String name = "order:"+req.getMemberId()+":"+req.getOrderSn();
         redisTemplate.opsForValue().getOperations().delete(name);
-        // 加库存 获取信号量
-        RSemaphore semaphore = redissonClient.getSemaphore("goods:"+order.getGoodsId());
-        semaphore.release();
     }
 
     @Override

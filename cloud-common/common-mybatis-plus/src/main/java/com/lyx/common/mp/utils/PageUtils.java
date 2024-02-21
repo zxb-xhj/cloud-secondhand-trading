@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.*;
 import java.io.Serializable;
 import java.util.List;
 /**
- * @author： 黎勇炫
+ * @author： xhj
  */
 @Data
 public class PageUtils<T> implements Serializable {

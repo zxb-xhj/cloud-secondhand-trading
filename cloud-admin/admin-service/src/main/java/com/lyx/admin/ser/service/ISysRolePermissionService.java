@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.lyx.admin.ser.entity.SysRolePermission;
 
 /**
- * @author： 黎勇炫
+ * @author： xhj
  */
 public interface ISysRolePermissionService extends IService<SysRolePermission> {
 

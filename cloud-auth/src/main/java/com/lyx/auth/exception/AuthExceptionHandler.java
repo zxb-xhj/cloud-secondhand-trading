@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
- * @author 黎勇炫
+ * @author xhj
  * @date 2022年10月09日 19:59
  */
 @RestControllerAdvice

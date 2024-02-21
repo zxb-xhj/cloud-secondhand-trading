@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
  * 用户地址 Mapper 接口
  * </p>
  *
- * @author 黎勇炫
+ * @author xhj
  * @since 2023-03-25 09:42:34
  */
 @Mapper

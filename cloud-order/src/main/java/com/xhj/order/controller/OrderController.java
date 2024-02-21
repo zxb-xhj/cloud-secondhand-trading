@@ -217,4 +217,26 @@ public class OrderController {
         }
         return R.ok(createTime);
     }
+
+    public static void main(String[] args) {
+        int[] a = {12,21,1,23,22,34,53,13,12,11};
+        for (int i = 0; i < a.length; i++) {
+            for (int j = i+1; j < a.length; j++) {
+                if (a[i]>a[j]){
+                    int b = a[j];
+                    a[j] = a[i];
+                    a[i] = b;
+                }
+            }
+        }
+        for (int i : a) {
+            System.out.println(i);
+        }
+
+        float s = 1;
+        double e =1;
+        String d = "ahgdsfh";
+        String replace = d.replace("a", " ");
+        d.split("d");
+    }
 }

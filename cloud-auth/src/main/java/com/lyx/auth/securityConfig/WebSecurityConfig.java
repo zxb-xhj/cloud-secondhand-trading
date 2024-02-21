@@ -17,7 +17,7 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
- * @author 黎勇炫
+ * @author xhj
  * @date 2022年10月09日 19:42
  */
 @Configuration

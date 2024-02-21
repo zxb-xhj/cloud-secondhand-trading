@@ -91,4 +91,13 @@ public class AuditVo {
      * 是否上架
      */
     private Integer isOnSell;
+    /**
+     * 1 自提 ，2 快递 ，0 自提+快递
+     */
+    private Integer deliveryMethod;
+
+    /**
+     * 运费 0包邮
+     */
+    private Long freight;
 }

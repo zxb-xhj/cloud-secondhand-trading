@@ -3,7 +3,7 @@ package com.lyx.admin.dto;
 import lombok.Data;
 
 /**
- * @author 黎勇炫
+ * @author xhj
  * @date 2022年10月10日 17:07
  */
 @Data

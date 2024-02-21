@@ -11,7 +11,7 @@ import org.springframework.security.oauth2.provider.client.BaseClientDetails;
 import org.springframework.stereotype.Service;
 
 /**
- * @author 黎勇炫
+ * @author xhj
  * @date 2022年10月09日 19:40
  */
 @Service

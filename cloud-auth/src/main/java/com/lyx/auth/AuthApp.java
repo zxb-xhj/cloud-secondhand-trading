@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
- * @author 黎勇炫
+ * @author xhj
  * @date 2022年10月08日 22:18
  */
 @SpringBootApplication

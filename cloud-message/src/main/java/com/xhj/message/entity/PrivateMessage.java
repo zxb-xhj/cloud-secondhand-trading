@@ -14,7 +14,7 @@ import lombok.Setter;
  * 私信表
  * </p>
  *
- * @author 黎勇炫
+ * @author xhj
  * @since 2023-04-17 03:06:00
  */
 @Getter

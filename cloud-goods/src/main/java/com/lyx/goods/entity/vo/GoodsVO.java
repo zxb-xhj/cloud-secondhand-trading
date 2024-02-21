@@ -16,13 +16,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * @author 黎勇炫
+ * @author xhj
  * @date 2023年04月05日 14:37
  */
 @Data
 public class GoodsVO implements Serializable {
 //    private static final long serialVersionUID = 1L;
-
+private static final long serialVersionUID = -7487791103573814933L;
      /**
        * 编号
        */
@@ -117,6 +117,23 @@ public class GoodsVO implements Serializable {
      * 令牌
      */
     private String token;
+    /**
+     * 0 是 ，1 否
+     */
+    private Integer isCoeducation;
 
+    /**
+     * 1 自提 ，2 快递 ，0 自提+快递
+     */
+    private Integer deliveryMethod;
+    /**
+     * 学校
+     */
+    private String schoolName;
+
+    /**
+     * 运费 0包邮
+     */
+    private Long freight;
 
 }

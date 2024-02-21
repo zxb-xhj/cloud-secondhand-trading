@@ -75,6 +75,8 @@ public class StorageController {
     public R save(@RequestBody StorageDTO storageDTO){
         Storage storage = new Storage();
         BeanUtils.copyProperties(storageDTO,storage);
+        storage.setUsed(0);
+        storage.setResidue(0);
 		StorageService.save(storage);
 
         return R.ok();

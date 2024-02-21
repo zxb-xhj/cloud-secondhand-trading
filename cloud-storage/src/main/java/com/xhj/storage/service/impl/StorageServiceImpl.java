@@ -58,7 +58,12 @@ public class StorageServiceImpl extends ServiceImpl<StorageDao, Storage> impleme
         wrapper.eq("product_id",id);
         Storage storage = this.getOne(wrapper);
         if (storage!=null){
-            return storage.getTotal();
+            if ((storage.getResidue()==null&&storage.getUsed()==null)||(storage.getResidue()==0&&storage.getUsed()==0)){
+                return storage.getTotal();
+            }
+            if (storage.getResidue().equals(storage.getTotal()-(storage.getUsed()!=null?storage.getUsed():0))){
+                return storage.getResidue();
+            }
         }
         return 0;
     }

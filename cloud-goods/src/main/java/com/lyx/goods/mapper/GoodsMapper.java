@@ -15,7 +15,7 @@ import java.util.List;
  *  Mapper 接口
  * </p>
  *
- * @author 黎勇炫
+ * @author xhj
  * @since 2023-03-31 11:16:28
  */
 @Mapper
@@ -46,4 +46,6 @@ public interface GoodsMapper extends BaseMapper<Goods> {
      * @return
      */
     Integer getViewCount(Long id);
+
+    List<GoodsVO> getByGoodsId(List<Long> goodsIds);
 }

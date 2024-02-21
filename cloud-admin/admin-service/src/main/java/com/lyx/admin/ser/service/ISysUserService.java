@@ -10,7 +10,7 @@ import com.lyx.admin.ser.entity.vo.SysUserVO;
 import com.lyx.common.mp.utils.PageUtils;
 
 /**
- * @author： 黎勇炫
+ * @author： xhj
  */
 public interface ISysUserService extends IService<SysUser> {
 

@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
- * @author： 黎勇炫
+ * @author： xhj
  */
 @Data
 public class SaveMenuReq extends BaseEntity implements Serializable {

@@ -17,6 +17,8 @@ import com.lyx.goods.service.RecommendService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -28,7 +30,7 @@ import java.util.stream.Collectors;
  *  服务实现类
  * </p>
  *
- * @author 黎勇炫
+ * @author xhj
  * @since 2023-04-15 02:19:14
  */
 @Service
@@ -42,6 +44,7 @@ public class RecommendServiceImpl extends ServiceImpl<RecommendMapper, Recommend
      * @param req
      */
     @Override
+    @Cacheable(value = "cloud-goods:releaseGoods:Recommend")
     public PageUtils<Recommend> listPage(RecommendListPageReq req) {
         // 构建分页对象 设置分页参数
         Page<Recommend> page = new Page<>(req.getPageNo(),req.getPageSize());
@@ -64,6 +67,7 @@ public class RecommendServiceImpl extends ServiceImpl<RecommendMapper, Recommend
      * @param goodsIds
      */
     @Override
+    @CacheEvict(value = "cloud-goods:releaseGoods:Recommend")
     public void saveRecommend(List<Long> goodsIds) {
         // 检查推荐的商品数量是否已经到上限
         int count = this.count();

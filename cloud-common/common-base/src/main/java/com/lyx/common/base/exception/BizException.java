@@ -3,7 +3,7 @@ package com.lyx.common.base.exception;
 import com.lyx.common.base.result.IResultCode;
 import lombok.Getter;
 /**
- * @author： 黎勇炫
+ * @author： xhj
  */
 @Getter
 public class BizException extends RuntimeException {
