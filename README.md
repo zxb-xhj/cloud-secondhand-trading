@@ -5,17 +5,16 @@
 此系统具有两个操作用户角色，即用户和系统管理员。用户根据自己的情况通过系统购买商品或者发布自己需要出售的商品及其信息；系统管理员在后台对商品和用户进行管理，对资料进行统计分析并开展系统的正常运行维护工作。
 
 首页  --必须登录才能对商品进行发布和购买
-![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/26654026-d66e-47c7-b350-f4828e5edc56)
 ![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/219f4970-5ccf-40e7-85f9-7487adfdbe0e)
-
+![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/26654026-d66e-47c7-b350-f4828e5edc56)
 登录
 ![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/7484fd85-8309-4d7f-b72d-e1215aa6991a)
 注册
 ![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/1d3bb6aa-f275-4c7a-9789-a0c7afda3843)
 商品展示  
-![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/ef8e6072-c869-47c8-afe5-4c8ba91926d0)
+![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/591402ff-4060-42c9-ba08-d122ece31860)
 商品信息  --展示商品的详细信息和商家，点击聊一聊和商家聊天
-![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/8fcf2261-d532-4d2a-b744-0e72434a8de5)
+![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/3d643845-d4d4-4c73-8f40-134d9755ddb1)
 商品评论
 ![image](https://github.com/zxb-xhj/cloud-secondhand-trading/assets/109727153/67433768-5dce-4eea-ab54-aecbfbaad604)
 聊天服务
